@@ -91,25 +91,45 @@ h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:600;line-height:1.2;max-width:70
 </div>
 
 <script>
-/* ── SECURITY: Verify session_id param ───────────────────── */
+/* ── SECURITY: Verify Fanbasis redirect params ───────────────────── */
 (function(){
   const params = new URLSearchParams(window.location.search);
+
+  // Fanbasis success redirect passes order_id or session_id
+  const orderId   = params.get('order_id');
   const sessionId = params.get('session_id');
-  const plan = params.get('plan');
-  const email = params.get('email');
-  // If no session_id at all — redirect to landing
-  if(!sessionId && !params.get('demo')) {
+  const isDemo    = params.get('demo');
+
+  // Block direct access — must arrive from Fanbasis checkout redirect
+  if(!orderId && !sessionId && !isDemo) {
     window.location.href = 'index.html';
     return;
   }
-  // Populate dynamic text
-  if(plan) {
-    const names = {starter:'Starter',professional:'Professional',agency:'Agency'};
-    document.getElementById('tierName').textContent = names[plan.toLowerCase()] || plan;
+
+  // Plan detection — Fanbasis passes ?plan= in our configured success URL
+  // or we detect from ?product_name= or ?tier=
+  const planRaw = params.get('plan') || params.get('tier') || params.get('product_name') || '';
+  const plan = planRaw.toLowerCase();
+
+  const names = { starter:'Starter', professional:'Professional', agency:'Agency' };
+
+  if(plan && names[plan]) {
+    document.getElementById('tierName').textContent = names[plan];
+  } else if(planRaw) {
+    // Graceful fallback — show whatever Fanbasis sends
+    document.getElementById('tierName').textContent = planRaw;
   }
+
+  // Email — Fanbasis may pass buyer email in redirect
+  const email = params.get('email') || params.get('buyer_email') || params.get('fan_email') || '';
   if(email) {
     document.getElementById('customerEmail').textContent = decodeURIComponent(email);
   }
+
+  // Store order ref in sessionStorage for onboarding page
+  const ref = orderId || sessionId;
+  if(ref) sessionStorage.setItem('olivia_order_id', ref);
+  if(plan) sessionStorage.setItem('olivia_plan', plan);
 })();
 
 /* ── CONFETTI ────────────────────────────────────────────── */
