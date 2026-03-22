@@ -1,1609 +1,436 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Olivia — The AI Chief of Staff for Entrepreneurs</title>
-  <meta name="description" content="Olivia manages your business, knows your numbers, reads your emails, and briefs you every morning. The AI Chief of Staff built for entrepreneurs who move fast." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Olivia — The AI Chief of Staff built for entrepreneurs. She manages your business, knows your numbers, reads your emails, and gets smarter every day.">
+<title>Olivia AI — Your AI Chief of Staff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080810;--bg2:#0d0d1a;
+  --gold:#C9A84C;--gold-dim:#8a6f2f;--gold-glow:#C9A84C44;
+  --blue:#4C8BC9;--white:#f0f0f8;--gray:#8888aa;
+  --glass:rgba(255,255,255,0.04);--radius:14px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:3px}
 
-    :root {
-      --bg:        #080810;
-      --surface:   #0F0F1A;
-      --raised:    #141425;
-      --gold:      #C9A84C;
-      --gold-glow: #E0BD6A;
-      --blue:      #4C8BC9;
-      --text:      #F0F0F8;
-      --muted:     #8888AA;
-      --border:    rgba(201,168,76,0.18);
-      --glass:     rgba(255,255,255,0.03);
-      --radius:    16px;
-    }
+/* PARTICLES */
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.55}
 
-    html { scroll-behavior: smooth; }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 60px;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(8,8,16,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-color:rgba(201,168,76,.12)}
+.nav-logo{font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:700;color:var(--gold);letter-spacing:3px;text-shadow:0 0 20px var(--gold-glow)}
+.nav-links{display:flex;align-items:center;gap:36px}
+.nav-links a{font-size:.875rem;font-weight:500;color:var(--gray);letter-spacing:.5px;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.btn-nav{background:var(--gold);color:#080810;font-weight:600;font-size:.875rem;letter-spacing:.5px;padding:10px 22px;border-radius:50px;transition:box-shadow .2s,transform .15s;cursor:pointer;border:none;font-family:'Inter',sans-serif}
+.btn-nav:hover{box-shadow:0 0 22px var(--gold-glow);transform:translateY(-1px)}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
+/* HERO */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px}
+.hero-wordmark{font-family:'Orbitron',sans-serif;font-size:clamp(3.5rem,10vw,7rem);font-weight:900;color:var(--gold);letter-spacing:8px;animation:breathe 4s ease-in-out infinite;margin-bottom:28px}
+@keyframes breathe{0%,100%{text-shadow:0 0 30px #C9A84C66,0 0 60px #C9A84C22}50%{text-shadow:0 0 55px #C9A84Caa,0 0 110px #C9A84C44}}
+.hero h1{font-size:clamp(1.6rem,4vw,2.8rem);font-weight:600;color:var(--white);max-width:780px;line-height:1.25;margin-bottom:20px}
+.hero p{font-size:clamp(1rem,2vw,1.2rem);color:var(--gray);max-width:620px;line-height:1.7;margin-bottom:44px}
+.hero-form{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;max-width:520px;width:100%;margin-bottom:20px}
+.hero-form input,.final-form input{flex:1;min-width:240px;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.35);color:var(--white);font-family:'Inter',sans-serif;font-size:1rem;padding:14px 20px;border-radius:50px;outline:none;transition:border-color .2s,box-shadow .2s}
+.hero-form input::placeholder,.final-form input::placeholder{color:var(--gray)}
+.hero-form input:focus,.final-form input:focus{border-color:var(--gold);box-shadow:0 0 18px var(--gold-glow)}
+.btn-gold{background:var(--gold);color:#080810;font-family:'Inter',sans-serif;font-weight:700;font-size:1rem;padding:14px 28px;border-radius:50px;border:none;cursor:pointer;transition:box-shadow .2s,transform .15s;white-space:nowrap}
+.btn-gold:hover{box-shadow:0 0 30px var(--gold-glow);transform:translateY(-2px)}
+.hero-sub{font-size:.85rem;color:var(--gray)}
+.hero-sub span{color:var(--gold);font-weight:600}
+.divider-gold{width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:48px auto 0}
 
-    /* ── CANVAS ────────────────────────────────────── */
-    #particle-canvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.45;
-    }
+/* SECTIONS */
+section{position:relative;z-index:1;padding:100px 24px}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-label{font-size:.75rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:600}
+.section-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:700;line-height:1.2;margin-bottom:16px}
+.section-sub{color:var(--gray);font-size:1.1rem;max-width:600px;line-height:1.7}
 
-    /* ── NAVIGATION ────────────────────────────────── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5%;
-      height: 72px;
-      background: rgba(8,8,16,0.85);
-      backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.3s;
-    }
-    .nav-logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: 0.12em;
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--text); font-weight: 400; }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text); }
-    .btn-nav {
-      background: linear-gradient(135deg, var(--gold), #a07830);
-      color: #080810;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      padding: 10px 22px;
-      border-radius: 8px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 20px rgba(201,168,76,0.3);
-    }
-    .btn-nav:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 30px rgba(201,168,76,0.5);
-    }
+/* FEATURE CARDS */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:60px}
+.feat-card{background:var(--glass);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);padding:32px 28px;transition:border-color .3s,transform .3s,box-shadow .3s;backdrop-filter:blur(12px)}
+.feat-card:hover{border-color:rgba(201,168,76,.45);transform:translateY(-4px);box-shadow:0 12px 40px rgba(201,168,76,.08)}
+.feat-icon{font-size:2rem;margin-bottom:16px}
+.feat-card h3{font-family:'Orbitron',sans-serif;font-size:.95rem;letter-spacing:1.5px;color:var(--gold);margin-bottom:12px}
+.feat-card p{color:var(--gray);font-size:.95rem;line-height:1.7}
 
-    /* ── SECTIONS ──────────────────────────────────── */
-    section { position: relative; z-index: 1; }
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;margin-top:60px}
+.step{text-align:center;padding:40px 24px;background:var(--glass);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius)}
+.step-num{font-family:'Orbitron',sans-serif;font-size:2.5rem;font-weight:900;color:var(--gold);opacity:.25;margin-bottom:16px;display:block}
+.step h3{font-size:1.1rem;font-weight:600;margin-bottom:10px;color:var(--white)}
+.step p{color:var(--gray);font-size:.95rem}
 
-    /* ── HERO ──────────────────────────────────────── */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 120px 5% 80px;
-    }
-    .hero-eyebrow {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--gold);
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.2s;
-    }
-    .hero-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(3.5rem, 9vw, 8rem);
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.2rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.4s;
-    }
-    .hero-title .gold { color: var(--gold); }
-    .hero-subtitle {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.9rem, 2.5vw, 1.25rem);
-      font-weight: 500;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      max-width: 680px;
-      margin: 0 auto 2rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.6s;
-    }
-    .hero-body {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 640px;
-      margin: 0 auto 3rem;
-      line-height: 1.8;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.8s;
-    }
-    .hero-body strong { color: var(--text); }
-    .hero-ctas {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 1s;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--gold), #a07830);
-      color: #080810;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      padding: 18px 40px;
-      border-radius: 10px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 40px rgba(201,168,76,0.4), 0 8px 32px rgba(0,0,0,0.4);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 60px rgba(201,168,76,0.6), 0 12px 40px rgba(0,0,0,0.5);
-    }
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      padding: 17px 36px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      text-decoration: none;
-      cursor: pointer;
-      transition: border-color 0.2s, color 0.2s, background 0.2s;
-    }
-    .btn-ghost:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-      background: rgba(201,168,76,0.06);
-    }
-    .hero-scroll {
-      margin-top: 5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 1.4s;
-    }
-    .scroll-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-    .scroll-line {
-      width: 1px;
-      height: 60px;
-      background: linear-gradient(to bottom, var(--gold), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollPulse {
-      0%, 100% { opacity: 0.4; transform: scaleY(1); }
-      50% { opacity: 1; transform: scaleY(1.1); }
-    }
+/* PRICING */
+.pricing-toggle{display:flex;align-items:center;gap:16px;justify-content:center;margin-top:36px;margin-bottom:60px;font-size:.9rem;color:var(--gray)}
+.toggle-switch{position:relative;width:52px;height:28px;cursor:pointer}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:rgba(255,255,255,.1);border-radius:50px;transition:.3s;border:1px solid rgba(201,168,76,.3)}
+.toggle-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;bottom:3px;background:var(--gold);border-radius:50%;transition:.3s}
+.toggle-switch input:checked+.toggle-slider{background:rgba(201,168,76,.15)}
+.toggle-switch input:checked+.toggle-slider::before{transform:translateX(24px)}
+.toggle-badge{background:rgba(201,168,76,.15);color:var(--gold);font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:50px;border:1px solid rgba(201,168,76,.3)}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:24px;align-items:start}
+.price-card{background:var(--glass);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);padding:36px 32px;backdrop-filter:blur(12px);transition:transform .3s,box-shadow .3s}
+.price-card:hover{transform:translateY(-4px)}
+.price-card.featured{border-color:var(--gold);box-shadow:0 0 40px rgba(201,168,76,.12);position:relative}
+.price-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--gold);color:#080810;font-size:.75rem;font-weight:700;padding:4px 16px;border-radius:50px;letter-spacing:1px;white-space:nowrap}
+.price-tier{font-family:'Orbitron',sans-serif;font-size:.8rem;letter-spacing:2px;color:var(--gray);margin-bottom:12px}
+.price-amount{font-size:3rem;font-weight:700;color:var(--white);line-height:1;margin-bottom:4px}
+.price-amount sup{font-size:1.2rem;vertical-align:top;margin-top:8px;color:var(--gold)}
+.price-period{font-size:.85rem;color:var(--gray);margin-bottom:28px}
+.price-features{list-style:none;margin-bottom:32px}
+.price-features li{padding:8px 0;font-size:.9rem;color:var(--gray);border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:flex-start;gap:10px}
+.price-features li::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0}
+.btn-outline{width:100%;background:transparent;border:1px solid rgba(201,168,76,.5);color:var(--gold);font-family:'Inter',sans-serif;font-weight:600;font-size:.95rem;padding:14px;border-radius:50px;cursor:pointer;transition:background .2s,box-shadow .2s}
+.btn-outline:hover{background:rgba(201,168,76,.1);box-shadow:0 0 20px var(--gold-glow)}
+.btn-gold-full{width:100%;background:var(--gold);color:#080810;font-family:'Inter',sans-serif;font-weight:700;font-size:.95rem;padding:14px;border-radius:50px;border:none;cursor:pointer;transition:box-shadow .2s,transform .15s}
+.btn-gold-full:hover{box-shadow:0 0 30px var(--gold-glow);transform:translateY(-2px)}
 
-    /* ── SOCIAL PROOF BAR ──────────────────────────── */
-    #proof-bar {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 24px 5%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3rem;
-      flex-wrap: wrap;
-    }
-    .proof-item {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-    .proof-item .icon { font-size: 1.1rem; }
-    .proof-item strong { color: var(--gold); }
-    .proof-divider {
-      width: 1px;
-      height: 24px;
-      background: var(--border);
-    }
-    .integrations-row {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-    }
-    .integration-badge {
-      background: var(--raised);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 14px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .integration-badge:hover { color: var(--gold); border-color: var(--gold); }
+/* FAQ */
+.faq-list{max-width:760px;margin:60px auto 0}
+.faq-item{border-bottom:1px solid rgba(255,255,255,.07);overflow:hidden}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:22px 0;cursor:pointer;font-size:1rem;font-weight:500;color:var(--white);transition:color .2s;background:none;border:none;width:100%;text-align:left;font-family:'Inter',sans-serif}
+.faq-q:hover{color:var(--gold)}
+.faq-icon{width:28px;height:28px;border-radius:50%;border:1px solid rgba(201,168,76,.35);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;transition:transform .3s}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;color:var(--gray);font-size:.95rem;line-height:1.8}
+.faq-item.open .faq-a{max-height:200px;padding-bottom:20px}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
 
-    /* ── SHARED SECTION STYLES ─────────────────────── */
-    .section-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 100px 5%;
-    }
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--gold);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      display: block;
-    }
-    .section-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.01em;
-      margin-bottom: 1.5rem;
-    }
-    .section-subtitle {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 560px;
-      line-height: 1.75;
-    }
+/* FINAL CTA */
+.final-cta{text-align:center;padding:120px 24px;background:radial-gradient(ellipse 70% 60% at 50% 100%,rgba(201,168,76,.06) 0%,transparent 70%)}
+.final-form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:500px;margin:0 auto 16px}
+.final-form input{min-width:220px}
+.privacy-note{font-size:.8rem;color:var(--gray);opacity:.7}
 
-    /* ── PROBLEM ───────────────────────────────────── */
-    #problem { background: var(--surface); }
-    .problem-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-top: 3.5rem;
-    }
-    .problem-card {
-      background: var(--glass);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: var(--radius);
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .problem-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(255,80,80,0.5), transparent);
-    }
-    .problem-card:hover {
-      border-color: rgba(255,80,80,0.2);
-      transform: translateY(-4px);
-    }
-    .problem-num {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.5rem;
-      font-weight: 900;
-      color: rgba(255,80,80,0.15);
-      margin-bottom: 1rem;
-    }
-    .problem-card h3 {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .problem-card p { font-size: 0.92rem; color: var(--muted); line-height: 1.7; }
-    .problem-transition {
-      text-align: center;
-      margin-top: 4rem;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: 0.05em;
-    }
+/* TOAST */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(13,13,26,.95);border:1px solid var(--gold);color:var(--white);padding:14px 28px;border-radius:50px;font-size:.9rem;z-index:999;transition:transform .4s,opacity .4s;opacity:0;backdrop-filter:blur(12px);box-shadow:0 0 30px var(--gold-glow)}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
-    /* ── FEATURES ──────────────────────────────────── */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.5rem;
-      margin-top: 3.5rem;
-    }
-    .feature-card {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-      cursor: default;
-    }
-    .feature-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .feature-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(201,168,76,0.35);
-      box-shadow: 0 20px 60px rgba(201,168,76,0.08);
-    }
-    .feature-card:hover::before { opacity: 1; }
-    .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
-    .feature-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 0.6rem;
-    }
-    .feature-card h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 0.6rem;
-    }
-    .feature-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.06);padding:48px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.footer-logo{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--gold);letter-spacing:3px}
+.footer-tagline{font-size:.8rem;color:var(--gray);margin-top:4px}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap}
+.footer-links a{font-size:.85rem;color:var(--gray);transition:color .2s}
+.footer-links a:hover{color:var(--white)}
+.footer-copy{font-size:.8rem;color:var(--gray);opacity:.6}
 
-    /* ── HOW IT WORKS ──────────────────────────────── */
-    #how { background: var(--surface); }
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
-      margin-top: 3.5rem;
-      position: relative;
-    }
-    .step {
-      text-align: center;
-      padding: 2.5rem 2rem;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      transition: transform 0.3s;
-    }
-    .step:hover { transform: translateY(-4px); }
-    .step-num {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--gold), #a07830);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 900;
-      color: #080810;
-      margin: 0 auto 1.5rem;
-      box-shadow: 0 0 30px rgba(201,168,76,0.4);
-    }
-    .step h3 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: var(--text);
-      margin-bottom: 0.6rem;
-    }
-    .step p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
 
-    /* ── DEMO MOCKUP ───────────────────────────────── */
-    #demo { text-align: center; }
-    .mockup-container {
-      margin-top: 3.5rem;
-      display: inline-block;
-      position: relative;
-      max-width: 900px;
-      width: 100%;
-    }
-    .mockup-frame {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 80px rgba(201,168,76,0.08);
-    }
-    .mockup-topbar {
-      background: var(--raised);
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-bottom: 1px solid var(--border);
-    }
-    .dot-red   { width: 12px; height: 12px; border-radius: 50%; background: #FF5F57; }
-    .dot-yellow{ width: 12px; height: 12px; border-radius: 50%; background: #FFBD2E; }
-    .dot-green { width: 12px; height: 12px; border-radius: 50%; background: #28CA41; }
-    .mockup-url {
-      flex: 1;
-      text-align: center;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-    .mockup-body {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      min-height: 420px;
-    }
-    .mockup-sidebar {
-      background: rgba(8,8,16,0.5);
-      border-right: 1px solid var(--border);
-      padding: 1.5rem 1rem;
-    }
-    .sidebar-logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--gold);
-      margin-bottom: 2rem;
-      display: block;
-    }
-    .sidebar-nav { list-style: none; }
-    .sidebar-nav li {
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      color: var(--muted);
-      cursor: pointer;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .sidebar-nav li.active {
-      background: rgba(201,168,76,0.12);
-      color: var(--gold);
-    }
-    .mockup-main { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
-    .chat-header {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.75rem;
-      color: var(--gold);
-      letter-spacing: 0.15em;
-      margin-bottom: 0.5rem;
-    }
-    .chat-messages { flex: 1; display: flex; flex-direction: column; gap: 0.8rem; }
-    .msg {
-      max-width: 80%;
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      line-height: 1.6;
-      animation: fadeIn 0.4s ease;
-    }
-    .msg-olivia {
-      background: rgba(76,139,201,0.12);
-      border: 1px solid rgba(76,139,201,0.2);
-      color: var(--text);
-      align-self: flex-start;
-    }
-    .msg-user {
-      background: rgba(201,168,76,0.1);
-      border: 1px solid var(--border);
-      color: var(--text);
-      align-self: flex-end;
-    }
-    .msg-label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      margin-bottom: 4px;
-    }
-    .msg-olivia .msg-label { color: var(--blue); }
-    .msg-user .msg-label { color: var(--gold); text-align: right; }
-    .chat-input-row {
-      display: flex;
-      gap: 8px;
-      background: var(--raised);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 14px;
-      align-items: center;
-    }
-    .chat-input-fake {
-      flex: 1;
-      font-size: 0.82rem;
-      color: var(--muted);
-      font-family: 'Inter', sans-serif;
-    }
-    .chat-send {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: var(--gold);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-    }
-
-    /* ── TYPING INDICATOR ──────────────────────────── */
-    .typing { display: flex; gap: 4px; align-items: center; padding: 12px 16px; }
-    .typing span {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--blue);
-      animation: bounce 1.4s infinite;
-    }
-    .typing span:nth-child(2) { animation-delay: 0.2s; }
-    .typing span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes bounce {
-      0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-      40% { transform: translateY(-6px); opacity: 1; }
-    }
-
-    /* ── PRICING ───────────────────────────────────── */
-    #pricing { background: var(--surface); }
-    .pricing-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 2rem;
-      margin-bottom: 3.5rem;
-    }
-    .toggle-label { font-size: 0.88rem; color: var(--muted); font-weight: 500; }
-    .toggle-label.active { color: var(--text); }
-    .toggle-switch {
-      width: 52px;
-      height: 28px;
-      background: var(--raised);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      position: relative;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .toggle-switch.on { background: rgba(201,168,76,0.2); border-color: var(--gold); }
-    .toggle-knob {
-      width: 20px;
-      height: 20px;
-      background: var(--muted);
-      border-radius: 50%;
-      position: absolute;
-      top: 3px;
-      left: 4px;
-      transition: transform 0.3s, background 0.3s;
-    }
-    .toggle-switch.on .toggle-knob { transform: translateX(24px); background: var(--gold); }
-    .annual-badge {
-      background: rgba(201,168,76,0.15);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 3px 10px;
-      font-size: 0.72rem;
-      color: var(--gold);
-      font-weight: 600;
-      letter-spacing: 0.04em;
-    }
-    .pricing-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      align-items: start;
-    }
-    .pricing-card {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2.5rem;
-      position: relative;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .pricing-card:hover { transform: translateY(-4px); }
-    .pricing-card.featured {
-      border-color: var(--gold);
-      box-shadow: 0 0 60px rgba(201,168,76,0.12);
-      transform: scale(1.03);
-    }
-    .pricing-card.featured:hover { transform: scale(1.03) translateY(-4px); }
-    .featured-badge {
-      position: absolute;
-      top: -14px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(135deg, var(--gold), #a07830);
-      color: #080810;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 800;
-      letter-spacing: 0.15em;
-      padding: 5px 20px;
-      border-radius: 20px;
-      white-space: nowrap;
-    }
-    .plan-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-    .plan-tagline { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
-    .plan-price {
-      display: flex;
-      align-items: baseline;
-      gap: 4px;
-      margin-bottom: 0.4rem;
-    }
-    .price-currency {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--muted);
-      margin-top: 6px;
-    }
-    .price-amount {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 3rem;
-      font-weight: 900;
-      color: var(--text);
-      line-height: 1;
-    }
-    .price-period { font-size: 0.85rem; color: var(--muted); }
-    .annual-price { font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; }
-    .plan-divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
-    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-    .plan-features li {
-      font-size: 0.88rem;
-      color: var(--muted);
-      display: flex;
-      align-items: flex-start;
-      gap: 0.6rem;
-    }
-    .plan-features li::before {
-      content: '✓';
-      color: var(--gold);
-      font-weight: 800;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .btn-plan {
-      display: block;
-      width: 100%;
-      text-align: center;
-      margin-top: 2rem;
-      padding: 14px;
-      border-radius: 10px;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      border: none;
-      text-decoration: none;
-    }
-    .btn-plan-outline {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-    .btn-plan-outline:hover { border-color: var(--gold); color: var(--gold); }
-    .btn-plan-gold {
-      background: linear-gradient(135deg, var(--gold), #a07830);
-      color: #080810;
-      box-shadow: 0 0 30px rgba(201,168,76,0.3);
-    }
-    .btn-plan-gold:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 50px rgba(201,168,76,0.5);
-    }
-
-    /* ── FOUNDER ───────────────────────────────────── */
-    #founder { background: var(--bg); }
-    .founder-inner {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 4rem;
-      align-items: center;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 100px 5%;
-    }
-    .founder-photo {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: var(--raised);
-      border: 2px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 4rem;
-      flex-shrink: 0;
-      box-shadow: 0 0 60px rgba(201,168,76,0.12);
-    }
-    .founder-quote {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.4;
-      margin-bottom: 1.2rem;
-    }
-    .founder-story { font-size: 0.95rem; color: var(--muted); line-height: 1.8; }
-    .founder-story strong { color: var(--text); }
-
-    /* ── FAQ ───────────────────────────────────────── */
-    #faq { background: var(--surface); }
-    .faq-list { max-width: 720px; margin: 3rem auto 0; }
-    .faq-item {
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-    }
-    .faq-q {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.4rem 0;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--text);
-      gap: 1rem;
-      transition: color 0.2s;
-    }
-    .faq-q:hover { color: var(--gold); }
-    .faq-icon {
-      color: var(--gold);
-      font-size: 1.2rem;
-      font-weight: 300;
-      flex-shrink: 0;
-      transition: transform 0.3s;
-    }
-    .faq-item.open .faq-icon { transform: rotate(45deg); }
-    .faq-a {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.8;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.3s;
-      padding-bottom: 0;
-    }
-    .faq-item.open .faq-a { max-height: 300px; padding-bottom: 1.4rem; }
-
-    /* ── FINAL CTA ─────────────────────────────────── */
-    #cta {
-      text-align: center;
-      background: linear-gradient(180deg, var(--bg) 0%, #0A0A16 100%);
-    }
-    .cta-inner {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 120px 5%;
-    }
-    .cta-tag {
-      display: inline-block;
-      background: rgba(201,168,76,0.1);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 5px 18px;
-      font-size: 0.75rem;
-      color: var(--gold);
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-    }
-    .cta-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.6rem, 4vw, 2.6rem);
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 1rem;
-    }
-    .cta-subtitle { font-size: 1rem; color: var(--muted); margin-bottom: 2.5rem; line-height: 1.7; }
-    .waitlist-form { display: flex; flex-direction: column; gap: 0.8rem; max-width: 480px; margin: 0 auto; }
-    .form-row { display: flex; gap: 0.8rem; }
-    .form-input {
-      width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 18px;
-      font-size: 0.9rem;
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .form-input:focus { border-color: var(--gold); }
-    .form-input::placeholder { color: var(--muted); }
-    .btn-submit {
-      width: 100%;
-      background: linear-gradient(135deg, var(--gold), #a07830);
-      color: #080810;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      padding: 16px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 30px rgba(201,168,76,0.3);
-    }
-    .btn-submit:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 50px rgba(201,168,76,0.5);
-    }
-    .form-note { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
-    .success-msg {
-      display: none;
-      background: rgba(40,202,65,0.08);
-      border: 1px solid rgba(40,202,65,0.25);
-      border-radius: 10px;
-      padding: 1.5rem;
-      text-align: center;
-      color: #28CA41;
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    /* ── FOOTER ────────────────────────────────────── */
-    footer {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      padding: 3rem 5%;
-    }
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-    .footer-logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--gold);
-      text-decoration: none;
-    }
-    .footer-tagline { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
-    .footer-links { display: flex; gap: 2rem; }
-    .footer-links a { font-size: 0.82rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-    .footer-links a:hover { color: var(--gold); }
-    .footer-copy { font-size: 0.78rem; color: var(--muted); }
-
-    /* ── SCROLL ANIMATIONS ─────────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── KEYFRAMES ─────────────────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    /* ── GOLD GLOW PULSE on hero title ────────────── */
-    .gold { text-shadow: 0 0 40px rgba(201,168,76,0.4); }
-
-    /* ── COUNTER ───────────────────────────────────── */
-    .counter { font-variant-numeric: tabular-nums; }
-
-    /* ── RESPONSIVE ────────────────────────────────── */
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .mockup-body { grid-template-columns: 1fr; }
-      .mockup-sidebar { display: none; }
-      .founder-inner { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
-      .founder-photo { margin: 0 auto; }
-      .form-row { flex-direction: column; }
-      .footer-inner { flex-direction: column; align-items: flex-start; }
-    }
-  </style>
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:16px 24px}
+  .nav-links{display:none}
+  footer{padding:36px 24px;flex-direction:column;text-align:center}
+  .features-grid,.pricing-grid,.steps{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
 
-<!-- Particle Canvas -->
-<canvas id="particle-canvas"></canvas>
+<canvas id="particles"></canvas>
 
-<!-- ── NAVIGATION ────────────────────────────────────── -->
-<nav id="main-nav">
-  <a href="#" class="nav-logo">OLIVIA<span>.</span></a>
-  <ul class="nav-links">
-    <li><a href="#features">Features</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#faq">FAQ</a></li>
-  </ul>
-  <a href="#cta" class="btn-nav">Get Early Access</a>
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">OLIVIA</div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <button class="btn-nav" onclick="scrollToForm()">Get Early Access</button>
+  </div>
 </nav>
 
-<!-- ── HERO ──────────────────────────────────────────── -->
-<section id="hero">
-  <span class="hero-eyebrow">// AI Chief of Staff — Built for Operators</span>
-  <h1 class="hero-title">Meet <span class="gold">Olivia.</span></h1>
-  <p class="hero-subtitle">The AI Chief of Staff Built for Entrepreneurs Who Move Fast.</p>
-  <p class="hero-body">
-    She <strong>manages your business</strong>, knows your numbers, reads your emails, briefs you every morning, builds agents for any task, and <strong>gets smarter every single day</strong>. This is what having a genius on your team feels like.
-  </p>
-  <div class="hero-ctas">
-    <a href="#cta" class="btn-primary">Get Early Access — Limited Spots</a>
-    <a href="#how" class="btn-ghost">See How It Works</a>
-  </div>
-  <div class="hero-scroll">
-    <span class="scroll-label">Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-wordmark">OLIVIA</div>
+  <h1>The AI Chief of Staff Built for Entrepreneurs.</h1>
+  <p>She manages your business, knows your numbers, reads your emails, briefs you every morning, and gets smarter every single day. Built for people who move fast and cannot afford to slow down.</p>
+  <form class="hero-form" id="heroForm" onsubmit="handleSignup(event,'hero')">
+    <input type="email" id="heroEmail" placeholder="Enter your email" required autocomplete="email">
+    <button type="submit" class="btn-gold">Get Early Access &rarr;</button>
+  </form>
+  <p class="hero-sub">Join <span id="waitlistCount">0</span> entrepreneurs on the waitlist &nbsp;&middot;&nbsp; Free to join &nbsp;&middot;&nbsp; No spam</p>
+  <div class="divider-gold"></div>
 </section>
 
-<!-- ── SOCIAL PROOF BAR ───────────────────────────────── -->
-<div id="proof-bar">
-  <div class="proof-item">
-    <span class="icon">👥</span>
-    <span><strong class="counter" data-target="847">0</strong> people on the waitlist</span>
-  </div>
-  <div class="proof-divider"></div>
-  <div class="proof-item">
-    <span class="icon">⚡</span>
-    <span>Built by entrepreneurs, for entrepreneurs</span>
-  </div>
-  <div class="proof-divider"></div>
-  <div class="integrations-row">
-    <span class="integration-badge">Gmail</span>
-    <span class="integration-badge">Calendar</span>
-    <span class="integration-badge">Notion</span>
-    <span class="integration-badge">GHL</span>
-    <span class="integration-badge">Stripe</span>
-    <span class="integration-badge">Telegram</span>
-  </div>
-</div>
-
-<!-- ── PROBLEM ───────────────────────────────────────── -->
-<section id="problem">
-  <div class="section-inner">
-    <span class="section-label reveal">// The Problem</span>
-    <h2 class="section-title reveal">You are running a business<br>with tools designed for employees.</h2>
-    <div class="problem-cards">
-      <div class="problem-card reveal">
-        <div class="problem-num">01</div>
-        <h3>Fragmented Stack</h3>
-        <p>10 different apps for 10 different tasks. None of them talk to each other. You are the one manually connecting the dots.</p>
-      </div>
-      <div class="problem-card reveal">
-        <div class="problem-num">02</div>
-        <h3>Time Drain</h3>
-        <p>You spend 3 hours a day on tasks that should take 20 minutes. Admin, emails, reports, follow-ups. None of it needs your genius.</p>
-      </div>
-      <div class="problem-card reveal">
-        <div class="problem-num">03</div>
-        <h3>Delayed Intelligence</h3>
-        <p>By the time you compile the data you need to make a decision — the moment has already passed. Speed is leverage.</p>
-      </div>
-    </div>
-    <p class="problem-transition reveal">— There is a better way. —</p>
-  </div>
-</section>
-
-<!-- ── FEATURES ──────────────────────────────────────── -->
+<!-- FEATURES -->
 <section id="features">
   <div class="section-inner">
-    <span class="section-label reveal">// What Olivia Does</span>
-    <h2 class="section-title reveal">One assistant.<br>Every capability. Always learning.</h2>
+    <p class="section-label reveal">Capabilities</p>
+    <h2 class="section-title reveal">One assistant. Every capability.<br>Always learning.</h2>
+    <p class="section-sub reveal">Olivia connects to every tool you use and runs your business behind the scenes — so you only deal with what requires your genius.</p>
     <div class="features-grid">
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">🌅</div>
-        <div class="feature-title">Morning Briefing</div>
-        <h3>Start every day with perfect clarity.</h3>
-        <p>Every morning Olivia tells you exactly what matters. Revenue, emails, team status, schedule. Before you open a single app — you already know.</p>
+      <div class="feat-card reveal">
+        <div class="feat-icon">&#127749;</div>
+        <h3>Morning Briefing</h3>
+        <p>Revenue, emails, calendar, team status. Every morning. Before you open a single app.</p>
       </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">🧠</div>
-        <div class="feature-title">Business Intelligence</div>
-        <h3>Ask anything about your business.</h3>
-        <p>Olivia pulls live data from every tool you use and answers in seconds. No dashboards. No reports. Just the answer, instantly.</p>
+      <div class="feat-card reveal">
+        <div class="feat-icon">&#129504;</div>
+        <h3>Business Intelligence</h3>
+        <p>Ask anything. Get live data from every tool you use. Answered in seconds — not buried in dashboards.</p>
       </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">👑</div>
-        <div class="feature-title">Great Minds Council</div>
-        <h3>23 legendary advisors. On demand.</h3>
-        <p>What would Bezos do? What would Greene say? Channel the thinking of history's greatest operators, strategists, and builders — any time you need a second opinion.</p>
+      <div class="feat-card reveal">
+        <div class="feat-icon">&#128081;</div>
+        <h3>Great Minds Council</h3>
+        <p>Channel Bezos, Greene, Goggins — 23 legendary minds on demand. Real strategic wisdom. Instantly.</p>
       </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">💰</div>
-        <div class="feature-title">AI Bookkeeper</div>
-        <h3>Your finances always current, always accurate.</h3>
-        <p>P&amp;L projections, tax reserves, spending budgets. Olivia keeps your numbers live so you always know exactly where you stand and where you're going.</p>
+      <div class="feat-card reveal">
+        <div class="feat-icon">&#128176;</div>
+        <h3>AI Bookkeeper</h3>
+        <p>P&amp;L projections, tax reserves, spending budgets. Your finances always current. Always accurate.</p>
       </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">🤖</div>
-        <div class="feature-title">Agent Builder</div>
-        <h3>Build agents that work while you sleep.</h3>
-        <p>Tell Olivia to build you an agent for any task. She designs it, deploys it, and runs it. Indefinitely. No technical skill required.</p>
+      <div class="feat-card reveal">
+        <div class="feat-icon">&#129302;</div>
+        <h3>Agent Builder</h3>
+        <p>Tell Olivia to build an agent for any task. She builds it, deploys it, runs it. You just asked.</p>
       </div>
-
-      <div class="feature-card reveal">
-        <div class="feature-icon">📈</div>
-        <div class="feature-title">Always Improving</div>
-        <h3>She gets smarter every single day.</h3>
-        <p>Atlas trains Olivia every morning at 7am. The longer you use her — the better she gets. Your AI compounds like an investment.</p>
+      <div class="feat-card reveal">
+        <div class="feat-icon">&#128200;</div>
+        <h3>Always Learning</h3>
+        <p>Gets smarter about YOUR business every single day. The longer you use her — the more she knows.</p>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ── HOW IT WORKS ───────────────────────────────────── -->
+<!-- HOW IT WORKS -->
 <section id="how">
-  <div class="section-inner" style="text-align:center;">
-    <span class="section-label reveal">// Setup</span>
-    <h2 class="section-title reveal">Three steps.<br>Then Olivia handles the rest.</h2>
+  <div class="section-inner" style="text-align:center">
+    <p class="section-label reveal">Process</p>
+    <h2 class="section-title reveal">Up and running in 10 minutes.</h2>
+    <p class="section-sub reveal" style="margin:0 auto">No complicated setup. No technical knowledge required. Connect, brief her once, and she starts working.</p>
     <div class="steps">
       <div class="step reveal">
-        <div class="step-num">1</div>
-        <h3>Connect Your Tools</h3>
-        <p>Link Gmail, Calendar, Notion, GHL, Stripe and any other tool you use. Takes under 5 minutes. We walk you through every step.</p>
+        <span class="step-num">01</span>
+        <h3>Connect your tools</h3>
+        <p>Gmail, Calendar, Notion, GoHighLevel, Stripe, Airtable. Takes under 5 minutes.</p>
       </div>
       <div class="step reveal">
-        <div class="step-num">2</div>
-        <h3>Tell Her About Your Business</h3>
-        <p>Share your goals, your team, your KPIs, and how you think. Olivia builds a model of your business that gets sharper over time.</p>
+        <span class="step-num">02</span>
+        <h3>Tell Olivia about your business</h3>
+        <p>Your goals, your team, your KPIs. She remembers everything and uses it every day.</p>
       </div>
       <div class="step reveal">
-        <div class="step-num">3</div>
-        <h3>She Handles the Rest. Forever.</h3>
-        <p>Daily briefings. Intelligent answers. Agents working in the background. You focus on what only you can do. Olivia handles everything else.</p>
+        <span class="step-num">03</span>
+        <h3>She handles the rest. Forever.</h3>
+        <p>Daily briefings, business questions, bookkeeping, agents — all handled automatically.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── DEMO MOCKUP ────────────────────────────────────── -->
-<section id="demo">
-  <div class="section-inner" style="text-align:center;">
-    <span class="section-label reveal">// Live Interface</span>
-    <h2 class="section-title reveal">This is what your mornings<br>will look like.</h2>
-    <div class="mockup-container reveal">
-      <div class="mockup-frame">
-        <div class="mockup-topbar">
-          <div class="dot-red"></div>
-          <div class="dot-yellow"></div>
-          <div class="dot-green"></div>
-          <div class="mockup-url">olivia.ai — Morning Briefing</div>
-        </div>
-        <div class="mockup-body">
-          <div class="mockup-sidebar">
-            <span class="sidebar-logo">OLIVIA</span>
-            <ul class="sidebar-nav">
-              <li class="active">🌅 Morning Brief</li>
-              <li>💬 Chat</li>
-              <li>📊 Business</li>
-              <li>💰 Finances</li>
-              <li>👑 Great Minds</li>
-              <li>🤖 My Agents</li>
-              <li>📚 Books</li>
-              <li>⚙️ Settings</li>
-            </ul>
-          </div>
-          <div class="mockup-main" id="demo-chat">
-            <div class="chat-header">// MORNING BRIEFING — March 21, 2026</div>
-            <div class="chat-messages" id="chat-messages">
-              <!-- messages injected by JS -->
-            </div>
-            <div class="chat-input-row">
-              <span class="chat-input-fake">Ask Olivia anything about your business...</span>
-              <div class="chat-send">➤</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── PRICING ────────────────────────────────────────── -->
+<!-- PRICING -->
 <section id="pricing">
-  <div class="section-inner" style="text-align:center;">
-    <span class="section-label reveal">// Pricing</span>
+  <div class="section-inner" style="text-align:center">
+    <p class="section-label reveal">Pricing</p>
     <h2 class="section-title reveal">Choose your level of leverage.</h2>
-    <p class="section-subtitle reveal" style="margin:0 auto 0.5rem;">No contracts. Cancel any time. First 100 subscribers lock in 50% off forever.</p>
+    <p class="section-sub reveal" style="margin:0 auto">Every plan includes a 14-day free trial. No credit card required to join the waitlist.</p>
     <div class="pricing-toggle reveal">
-      <span class="toggle-label active" id="monthly-label">Monthly</span>
-      <div class="toggle-switch" id="billing-toggle">
-        <div class="toggle-knob"></div>
-      </div>
-      <span class="toggle-label" id="annual-label">Annual</span>
-      <span class="annual-badge">Save 2 months</span>
+      <span>Monthly</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="annualToggle" onchange="toggleAnnual()">
+        <span class="toggle-slider"></span>
+      </label>
+      <span>Annual <span class="toggle-badge">2 months free</span></span>
     </div>
-    <div class="pricing-cards reveal">
-
-      <div class="pricing-card">
-        <div class="plan-name">Starter</div>
-        <div class="plan-tagline">Your AI assistant, online.</div>
-        <div class="plan-price">
-          <span class="price-currency">$</span>
-          <span class="price-amount" id="p1-price">97</span>
-          <span class="price-period">/mo</span>
-        </div>
-        <div class="annual-price" id="p1-annual">&nbsp;</div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
-          <li>Olivia on web interface</li>
-          <li>3 integrations (Gmail, Calendar, Notion)</li>
-          <li>Voice in and out</li>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <p class="price-tier">STARTER</p>
+        <div class="price-amount"><sup>$</sup><span class="price-val" data-monthly="97" data-annual="81">97</span></div>
+        <p class="price-period">per month<span class="annual-note" style="display:none"> &middot; billed annually</span></p>
+        <ul class="price-features">
+          <li>3 integrations (Gmail, Calendar, CRM)</li>
           <li>Daily morning briefing</li>
-          <li>Task management</li>
-          <li>Basic bookkeeping</li>
-          <li>Great Minds Council</li>
+          <li>Great minds council</li>
           <li>Book summarization</li>
-          <li>1,000 messages / month</li>
+          <li>Voice commands in &amp; out</li>
+          <li>1,000 messages/month</li>
         </ul>
-        <a href="#cta" class="btn-plan btn-plan-outline">Start Free Trial</a>
+        <button class="btn-outline" onclick="scrollToForm()">Join Waitlist</button>
       </div>
-
-      <div class="pricing-card featured">
-        <div class="featured-badge">MOST POPULAR</div>
-        <div class="plan-name">Professional</div>
-        <div class="plan-tagline">Full power. Unlimited leverage.</div>
-        <div class="plan-price">
-          <span class="price-currency">$</span>
-          <span class="price-amount" id="p2-price">197</span>
-          <span class="price-period">/mo</span>
-        </div>
-        <div class="annual-price" id="p2-annual">&nbsp;</div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
+      <div class="price-card featured reveal">
+        <span class="price-badge">MOST POPULAR</span>
+        <p class="price-tier">PROFESSIONAL</p>
+        <div class="price-amount"><sup>$</sup><span class="price-val" data-monthly="197" data-annual="164">197</span></div>
+        <p class="price-period">per month<span class="annual-note" style="display:none"> &middot; billed annually</span></p>
+        <ul class="price-features">
           <li>Everything in Starter</li>
           <li>Unlimited integrations</li>
-          <li>Desktop app</li>
-          <li>Screen reading and analysis</li>
-          <li>Full bookkeeping &amp; projections</li>
-          <li>SOP builder</li>
-          <li>Agent creation &amp; deployment</li>
+          <li>Full bookkeeping &amp; P&amp;L projections</li>
+          <li>Agent builder — create AI agents on command</li>
+          <li>Screen reading capability</li>
           <li>Content strategy engine</li>
-          <li>5,000 messages / month</li>
+          <li>5,000 messages/month</li>
         </ul>
-        <a href="#cta" class="btn-plan btn-plan-gold">Start Free Trial</a>
+        <button class="btn-gold-full" onclick="scrollToForm()">Join Waitlist</button>
       </div>
-
-      <div class="pricing-card">
-        <div class="plan-name">Agency</div>
-        <div class="plan-tagline">Run your entire operation.</div>
-        <div class="plan-price">
-          <span class="price-currency">$</span>
-          <span class="price-amount" id="p3-price">497</span>
-          <span class="price-period">/mo</span>
-        </div>
-        <div class="annual-price" id="p3-annual">&nbsp;</div>
-        <div class="plan-divider"></div>
-        <ul class="plan-features">
+      <div class="price-card reveal">
+        <p class="price-tier">AGENCY</p>
+        <div class="price-amount"><sup>$</sup><span class="price-val" data-monthly="497" data-annual="414">497</span></div>
+        <p class="price-period">per month<span class="annual-note" style="display:none"> &middot; billed annually</span></p>
+        <ul class="price-features">
           <li>Everything in Professional</li>
-          <li>Mobile app (iOS + Android)</li>
-          <li>5 team members</li>
+          <li>5 team members included</li>
           <li>Full CRM integration</li>
-          <li>Custom integrations via API</li>
-          <li>Atlas maintenance included</li>
+          <li>Atlas maintenance agent included</li>
+          <li>Weekly AI training sessions</li>
           <li>Unlimited messages</li>
-          <li>Priority support (4hr response)</li>
-          <li>White-glove onboarding</li>
+          <li>Priority support</li>
         </ul>
-        <a href="#cta" class="btn-plan btn-plan-outline">Start Free Trial</a>
+        <button class="btn-outline" onclick="scrollToForm()">Join Waitlist</button>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ── FOUNDER ────────────────────────────────────────── -->
-<section id="founder">
-  <div class="founder-inner">
-    <div class="founder-photo reveal">👨‍💻</div>
-    <div>
-      <p class="founder-quote reveal">"I built Olivia because I needed her and couldn't find her anywhere."</p>
-      <p class="founder-story reveal">
-        Running an OFM agency means managing clients, creators, finances, emails, and strategy — all at once. I tried every tool on the market. <strong>None of them worked the way a real operator thinks.</strong><br><br>
-        So I built one that does. Olivia isn't a chatbot. She's an operating system for how entrepreneurs actually work — fast, connected, and always on.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ── FAQ ────────────────────────────────────────────── -->
+<!-- FAQ -->
 <section id="faq">
-  <div class="section-inner" style="text-align:center;">
-    <span class="section-label reveal">// Questions</span>
-    <h2 class="section-title reveal">Everything you need to know.</h2>
+  <div class="section-inner">
+    <p class="section-label reveal" style="text-align:center">Questions</p>
+    <h2 class="section-title reveal" style="text-align:center">Everything you need to know.</h2>
     <div class="faq-list">
-
       <div class="faq-item reveal">
-        <div class="faq-q">How is this different from ChatGPT? <span class="faq-icon">+</span></div>
-        <div class="faq-a">ChatGPT answers questions. Olivia runs your business. She is connected to your real data — your Gmail, your calendar, your finances, your CRM. She acts on your behalf, not just responds to prompts. And she remembers everything, building a deeper model of your business every day.</div>
+        <button class="faq-q" onclick="toggleFaq(this)">How is this different from ChatGPT?<span class="faq-icon">+</span></button>
+        <div class="faq-a">ChatGPT answers questions. Olivia runs your business. She connects to your actual tools, knows your real numbers, takes action on your behalf, and learns your specific business inside out. ChatGPT forgets you the moment you close the tab. Olivia never forgets.</div>
       </div>
-
       <div class="faq-item reveal">
-        <div class="faq-q">What tools does it connect to? <span class="faq-icon">+</span></div>
-        <div class="faq-a">Gmail, Google Calendar, Notion, GoHighLevel, Stripe, Telegram, Google Sheets, and more integrations are added continuously. The Professional and Agency tiers support unlimited integrations including custom API connections.</div>
+        <button class="faq-q" onclick="toggleFaq(this)">How long does setup take?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Under 10 minutes. Connect your tools, tell Olivia about your business — your goals, team, and KPIs — and she starts working immediately. We guide you through every step with zero technical knowledge required.</div>
       </div>
-
       <div class="faq-item reveal">
-        <div class="faq-q">How long does setup take? <span class="faq-icon">+</span></div>
-        <div class="faq-a">Under 10 minutes. We walk you through every step with a guided onboarding flow. Connect your first three tools, tell Olivia about your business, and your first morning briefing arrives tomorrow at 7am.</div>
+        <button class="faq-q" onclick="toggleFaq(this)">What tools does Olivia connect to?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Gmail, Google Calendar, Google Drive, Google Sheets, Notion, GoHighLevel, Airtable, Spotify — and more added every month. Professional and Agency plans get unlimited integrations including custom ones.</div>
       </div>
-
       <div class="faq-item reveal">
-        <div class="faq-q">Can I cancel anytime? <span class="faq-icon">+</span></div>
-        <div class="faq-a">Yes. No contracts. No cancellation fees. Cancel in one click from your settings page. We're confident you won't want to — but you're never locked in.</div>
+        <button class="faq-q" onclick="toggleFaq(this)">Can I cancel anytime?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Yes. No contracts. No cancellation fees. Cancel in one click from your account settings. We are confident you will not want to.</div>
       </div>
-
       <div class="faq-item reveal">
-        <div class="faq-q">Is my data safe? <span class="faq-icon">+</span></div>
-        <div class="faq-a">Your business data never leaves your own integrations. Olivia reads from your connected tools to answer questions and generate briefings, but she does not store your private emails, financial data, or messages on our servers. You own your data entirely.</div>
+        <button class="faq-q" onclick="toggleFaq(this)">Is my data safe?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Your data lives in your own tools — Gmail, Notion, your CRM. Olivia reads it to give you answers and take action. We never store your business data on our servers. Your data stays in the integrations you already trust.</div>
       </div>
-
-      <div class="faq-item reveal">
-        <div class="faq-q">What is the Great Minds Council? <span class="faq-icon">+</span></div>
-        <div class="faq-a">A unique feature that lets you channel the thinking of 23 of history's greatest minds — Jeff Bezos, Robert Greene, Naval Ravikant, Marcus Aurelius, Charlie Munger, and more. Ask any business question and hear how each of them would approach it. No other product on the market offers anything like it.</div>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- ── FINAL CTA ──────────────────────────────────────── -->
-<section id="cta">
-  <div class="cta-inner">
-    <span class="cta-tag reveal">⚡ Limited Early Access</span>
-    <h2 class="cta-title reveal">Join the waitlist.<br>First 100 subscribers lock in<br><span class="gold">50% off forever.</span></h2>
-    <p class="cta-subtitle reveal">No spam. No BS. Just Olivia updates. You'll be first to access the product when it launches.</p>
-
-    <div id="waitlist-form" class="waitlist-form reveal">
-      <div class="form-row">
-        <input type="text" class="form-input" id="first-name" placeholder="First name" />
-        <input type="email" class="form-input" id="email" placeholder="Email address" />
-      </div>
-      <button class="btn-submit" id="submit-btn" onclick="submitWaitlist()">
-        JOIN THE WAITLIST — GET 50% OFF FOREVER
-      </button>
-      <p class="form-note">🔒 No spam. No credit card required. Cancel anytime after launch.</p>
-    </div>
-
-    <div class="success-msg" id="success-msg">
-      ✓ You're on the list. Olivia will be in touch soon.<br>
-      <span style="font-size:0.8rem;color:var(--muted);font-weight:400;">Check your inbox for a welcome message.</span>
-    </div>
-  </div>
+<!-- FINAL CTA -->
+<section class="final-cta" id="waitlist">
+  <h2 class="section-title reveal">Join the waitlist.</h2>
+  <p class="reveal" style="color:var(--gray);font-size:1.1rem;margin-bottom:40px">First 100 subscribers get 40% off forever. No spam. No fluff. Just Olivia updates.</p>
+  <form class="final-form reveal" id="finalForm" onsubmit="handleSignup(event,'final')">
+    <input type="email" id="finalEmail" placeholder="Enter your email" required autocomplete="email">
+    <button type="submit" class="btn-gold">Secure Your Spot &rarr;</button>
+  </form>
+  <p class="privacy-note reveal">We respect your privacy. Unsubscribe anytime.</p>
 </section>
 
-<!-- ── FOOTER ─────────────────────────────────────────── -->
+<!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <div>
-      <a href="#" class="footer-logo">OLIVIA</a>
-      <p class="footer-tagline">The AI Chief of Staff for Entrepreneurs</p>
-    </div>
-    <div class="footer-links">
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#faq">FAQ</a>
-      <a href="mailto:hello@olivia.ai">Contact</a>
-    </div>
-    <p class="footer-copy">© 2026 Olivia AI. All rights reserved.</p>
+  <div>
+    <div class="footer-logo">OLIVIA</div>
+    <div class="footer-tagline">Built for entrepreneurs who move fast.</div>
   </div>
+  <div class="footer-links">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms</a>
+    <a href="mailto:office@elegancy.vip">Contact</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 Olivia AI</div>
 </footer>
 
-<!-- ── SCRIPTS ────────────────────────────────────────── -->
+<div class="toast" id="toast"></div>
+
 <script>
-// ── PARTICLE SYSTEM ──────────────────────────────────────
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
-let W, H;
-
-function resize() {
-  W = canvas.width  = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-
-function createParticles() {
-  particles = [];
-  const count = Math.floor((W * H) / 14000);
-  for (let i = 0; i < count; i++) {
-    particles.push({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: Math.random() * 1.5 + 0.3,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      color: Math.random() > 0.6 ? '#C9A84C' : '#4C8BC9',
-      alpha: Math.random() * 0.6 + 0.2
-    });
-  }
-}
-
-function drawParticles() {
-  ctx.clearRect(0, 0, W, H);
-  particles.forEach((p, i) => {
-    p.x += p.vx;
-    p.y += p.vy;
-    if (p.x < 0) p.x = W;
-    if (p.x > W) p.x = 0;
-    if (p.y < 0) p.y = H;
-    if (p.y > H) p.y = 0;
-
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = p.color;
-    ctx.globalAlpha = p.alpha;
-    ctx.fill();
-    ctx.globalAlpha = 1;
-
-    // Draw connections
-    for (let j = i + 1; j < particles.length; j++) {
-      const q = particles[j];
-      const dx = p.x - q.x, dy = p.y - q.y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < 120) {
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(q.x, q.y);
-        ctx.strokeStyle = p.color;
-        ctx.globalAlpha = (1 - dist / 120) * 0.15;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-      }
+/* PARTICLES */
+(function(){
+  const c=document.getElementById('particles'),ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+  const G='201,168,76',B='76,139,201';
+  function mk(){return{x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.3,dx:(Math.random()-.5)*.4,dy:(Math.random()-.5)*.4,col:Math.random()>.4?G:B,a:Math.random()*.6+.1}}
+  for(let i=0;i<140;i++)pts.push(mk());
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<110){ctx.beginPath();ctx.strokeStyle=`rgba(${pts[i].col},${.08*(1-d/110)})`;ctx.lineWidth=.5;ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke()}
     }
-  });
-  requestAnimationFrame(drawParticles);
-}
-
-resize();
-createParticles();
-drawParticles();
-window.addEventListener('resize', () => { resize(); createParticles(); });
-
-// ── SCROLL REVEAL ─────────────────────────────────────────
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// ── COUNTER ANIMATION ─────────────────────────────────────
-function animateCounter(el) {
-  const target = parseInt(el.dataset.target);
-  const duration = 2000;
-  const start = performance.now();
-  function step(now) {
-    const elapsed = now - start;
-    const progress = Math.min(elapsed / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.floor(eased * target).toLocaleString();
-    if (progress < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-
-const counterObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      animateCounter(e.target);
-      counterObs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.5 });
-document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
-
-// ── FAQ ACCORDION ──────────────────────────────────────────
-document.querySelectorAll('.faq-q').forEach(q => {
-  q.addEventListener('click', () => {
-    const item = q.parentElement;
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  });
-});
-
-// ── BILLING TOGGLE ─────────────────────────────────────────
-const toggle = document.getElementById('billing-toggle');
-const mLabel = document.getElementById('monthly-label');
-const aLabel = document.getElementById('annual-label');
-let annual = false;
-
-const prices = { monthly: [97, 197, 497], annual: [81, 164, 414] };
-const annualText = ['$970/yr — save $194', '$1,970/yr — save $394', '$4,970/yr — save $994'];
-
-function updatePricing() {
-  const arr = annual ? prices.annual : prices.monthly;
-  document.getElementById('p1-price').textContent = arr[0];
-  document.getElementById('p2-price').textContent = arr[1];
-  document.getElementById('p3-price').textContent = arr[2];
-  document.getElementById('p1-annual').textContent = annual ? annualText[0] : '';
-  document.getElementById('p2-annual').textContent = annual ? annualText[1] : '';
-  document.getElementById('p3-annual').textContent = annual ? annualText[2] : '';
-  mLabel.classList.toggle('active', !annual);
-  aLabel.classList.toggle('active', annual);
-}
-
-toggle.addEventListener('click', () => {
-  annual = !annual;
-  toggle.classList.toggle('on', annual);
-  updatePricing();
-});
-
-// ── DEMO CHAT ANIMATION ────────────────────────────────────
-const demoMessages = [
-  { from: 'olivia', text: "Good morning. Here is your briefing for March 21st." },
-  { from: 'olivia', text: "💰 Revenue: $47,230 MTD (+12% vs last month). Top client: Elegancy Media at $18,400. 3 invoices pending — $8,200 due this week." },
-  { from: 'olivia', text: "📧 You have 14 unread emails. 3 require your attention today. The most urgent: Michael re: contract renewal — I've drafted a response, ready to send." },
-  { from: 'user',   text: "What's my cash position after the tax reserve?" },
-  { from: 'olivia', text: "After setting aside 28% for taxes, your operational cash is $34,085. You have 62 days of runway at current burn. Want me to pull the full P&L?" },
-];
-
-const chatEl = document.getElementById('chat-messages');
-let msgIdx = 0;
-
-function addMessage(msg) {
-  const div = document.createElement('div');
-  div.className = `msg msg-${msg.from}`;
-  div.innerHTML = `<div class="msg-label">${msg.from === 'olivia' ? 'OLIVIA' : 'YOU'}</div>${msg.text}`;
-  chatEl.appendChild(div);
-  chatEl.scrollTop = chatEl.scrollHeight;
-}
-
-function showTyping() {
-  const t = document.createElement('div');
-  t.className = 'msg msg-olivia typing-indicator';
-  t.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
-  chatEl.appendChild(t);
-  chatEl.scrollTop = chatEl.scrollHeight;
-  return t;
-}
-
-function runDemo() {
-  if (msgIdx >= demoMessages.length) {
-    setTimeout(() => {
-      chatEl.innerHTML = '';
-      msgIdx = 0;
-      setTimeout(runDemo, 1000);
-    }, 5000);
-    return;
-  }
-  const msg = demoMessages[msgIdx++];
-  if (msg.from === 'olivia') {
-    const t = showTyping();
-    setTimeout(() => {
-      chatEl.removeChild(t);
-      addMessage(msg);
-      setTimeout(runDemo, msg.text.length * 18 + 800);
-    }, 1200);
-  } else {
-    addMessage(msg);
-    setTimeout(runDemo, 1000);
-  }
-}
-
-// Start demo when section is visible
-const demoObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting && msgIdx === 0) { setTimeout(runDemo, 1000); demoObs.unobserve(e.target); }
-  });
-}, { threshold: 0.3 });
-const demoSection = document.getElementById('demo');
-if (demoSection) demoObs.observe(demoSection);
-
-// ── WAITLIST FORM ──────────────────────────────────────────
-async function submitWaitlist() {
-  const name  = document.getElementById('first-name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const btn   = document.getElementById('submit-btn');
-
-  if (!name || !email) {
-    document.getElementById('first-name').style.borderColor = name  ? '' : '#ff5555';
-    document.getElementById('email').style.borderColor      = email ? '' : '#ff5555';
-    return;
-  }
-
-  btn.textContent = 'JOINING...';
-  btn.disabled = true;
-
-  try {
-    const res = await fetch('http://localhost:3002/waitlist', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email })
+    pts.forEach(p=>{
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(${p.col},${p.a})`;ctx.fill();
+      p.x+=p.dx;p.y+=p.dy;
+      if(p.x<0||p.x>W)p.dx*=-1;if(p.y<0||p.y>H)p.dy*=-1;
     });
-    // Success regardless (may fail locally but show success)
-    document.getElementById('waitlist-form').style.display = 'none';
-    document.getElementById('success-msg').style.display   = 'block';
-  } catch {
-    // Show success even if server offline (waitlist will work when deployed)
-    document.getElementById('waitlist-form').style.display = 'none';
-    document.getElementById('success-msg').style.display   = 'block';
+    requestAnimationFrame(draw);
   }
+  draw();
+})();
+
+/* NAV */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40));
+
+/* REVEAL */
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* WAITLIST COUNT */
+(async()=>{try{const r=await fetch('/count',{signal:AbortSignal.timeout(3000)});if(r.ok){const d=await r.json();upCount(d.count||0)}}catch(e){}})();
+function upCount(n){document.querySelectorAll('#waitlistCount').forEach(el=>el.textContent=n.toLocaleString())}
+
+/* SIGNUP */
+async function handleSignup(e,src){
+  e.preventDefault();
+  const el=src==='hero'?document.getElementById('heroEmail'):document.getElementById('finalEmail');
+  const email=el.value.trim();if(!email)return;
+  const btn=e.target.querySelector('button[type="submit"]'),orig=btn.textContent;
+  btn.textContent='...';btn.disabled=true;
+  try{
+    const r=await fetch('/waitlist',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email}),signal:AbortSignal.timeout(5000)});
+    const d=await r.json();
+    if(d.success||d.message==='Already on the list!'){
+      showToast(d.message==='Already on the list!'?"You're already on the list — we'll be in touch!":"You're in! Check your inbox for a welcome message.");
+      el.value='';if(d.count)upCount(d.count);
+    }else throw new Error();
+  }catch(err){showToast("You're in! We'll be in touch soon.");el.value='';}
+  btn.textContent=orig;btn.disabled=false;
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000)}
+function scrollToForm(){document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})}
+
+/* ANNUAL TOGGLE */
+function toggleAnnual(){
+  const a=document.getElementById('annualToggle').checked;
+  document.querySelectorAll('.price-val').forEach(el=>el.textContent=a?el.dataset.annual:el.dataset.monthly);
+  document.querySelectorAll('.annual-note').forEach(el=>el.style.display=a?'inline':'none');
 }
 
-// Allow Enter key in form
-document.getElementById('email').addEventListener('keypress', e => {
-  if (e.key === 'Enter') submitWaitlist();
-});
+/* FAQ */
+function toggleFaq(btn){
+  const item=btn.parentElement,was=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!was)item.classList.add('open');
+}
 </script>
-
 </body>
 </html>
