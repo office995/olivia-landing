@@ -264,7 +264,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.06);pa
           <li>Voice commands in &amp; out</li>
           <li>1,000 messages/month</li>
         </ul>
-        <button class="btn-outline" onclick="scrollToForm()">Join Waitlist</button>
+        <button class="btn-outline" onclick="checkout('starter')">Get Access</button>
       </div>
       <div class="price-card featured reveal">
         <span class="price-badge">MOST POPULAR</span>
@@ -280,7 +280,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.06);pa
           <li>Content strategy engine</li>
           <li>5,000 messages/month</li>
         </ul>
-        <button class="btn-gold-full" onclick="scrollToForm()">Join Waitlist</button>
+        <button class="btn-gold-full" onclick="checkout('professional')">Get Access</button>
       </div>
       <div class="price-card reveal">
         <p class="price-tier">AGENCY</p>
@@ -295,7 +295,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.06);pa
           <li>Unlimited messages</li>
           <li>Priority support</li>
         </ul>
-        <button class="btn-outline" onclick="scrollToForm()">Join Waitlist</button>
+        <button class="btn-outline" onclick="checkout('agency')">Get Access</button>
       </div>
     </div>
   </div>
@@ -417,6 +417,23 @@ async function handleSignup(e,src){
 }
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000)}
 function scrollToForm(){document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})}
+
+/* ── FANBASIS CHECKOUT LINKS ─────────────────────────────────────────────── */
+/* Update these URLs after creating products in the Fanbasis dashboard        */
+const CHECKOUT = {
+  starter:      'FANBASIS_STARTER_LINK',
+  professional: 'FANBASIS_PROFESSIONAL_LINK',
+  agency:       'FANBASIS_AGENCY_LINK'
+};
+function checkout(plan){
+  const url = CHECKOUT[plan];
+  if(!url || url.startsWith('FANBASIS_')){
+    // Links not yet configured — fall back to waitlist
+    scrollToForm();
+    return;
+  }
+  window.location.href = url;
+}
 
 /* ANNUAL TOGGLE */
 function toggleAnnual(){
