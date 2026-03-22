@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Set Up Olivia — 5 Minutes to Your AI Chief of Staff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080810;--bg2:#0d0d1a;--gold:#C9A84C;--gold-glow:#C9A84C44;--gold-dim:#8a6f2f;
+  --blue:#4C8BC9;--white:#f0f0f8;--gray:#8888aa;--gray2:#555570;
+  --glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.07);--radius:14px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-size:16px;min-height:100vh;overflow-x:hidden}
+a{color:var(--gold);text-decoration:none}
+
+/* TOP BAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid rgba(255,255,255,.06)}
+.logo{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--gold);letter-spacing:3px}
+.step-count{font-size:.8rem;color:var(--gray);letter-spacing:1px}
+
+/* PROGRESS STRIP */
+.progress-strip{display:flex;gap:6px;padding:0 40px;margin-top:16px}
+.prog-seg{height:3px;flex:1;background:rgba(255,255,255,.08);border-radius:2px;transition:background .4s}
+.prog-seg.done{background:var(--gold)}
+.prog-seg.active{background:rgba(201,168,76,.4)}
+
+/* STEP CONTAINER */
+.steps-wrap{max-width:700px;margin:0 auto;padding:60px 24px 100px}
+
+/* STEP */
+.step{display:none}
+.step.active{display:block;animation:stepIn .4s ease}
+@keyframes stepIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.step-label{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:16px}
+.step h2{font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,3vw,2.2rem);font-weight:700;line-height:1.2;margin-bottom:10px}
+.step-sub{color:var(--gray);font-size:1rem;margin-bottom:40px;line-height:1.6}
+
+/* FORM ELEMENTS */
+.field{margin-bottom:22px}
+.field label{display:block;font-size:.8rem;font-weight:600;letter-spacing:.5px;color:var(--gray);text-transform:uppercase;margin-bottom:8px}
+.field input[type="text"],.field input[type="time"],.field select,.field textarea{
+  width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  color:var(--white);font-family:'Inter',sans-serif;font-size:1rem;
+  padding:14px 18px;border-radius:10px;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  appearance:none;-webkit-appearance:none;
+}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238888aa' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:44px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 14px var(--gold-glow)}
+.field input::placeholder,.field textarea::placeholder{color:var(--gray2)}
+.field textarea{resize:vertical;min-height:90px}
+
+/* TOOL CARDS */
+.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px}
+@media(max-width:560px){.tools-grid{grid-template-columns:1fr}}
+.tool-card{background:var(--glass);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:border-color .3s}
+.tool-card.connected{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.04)}
+.tool-info{display:flex;align-items:center;gap:12px}
+.tool-icon{font-size:1.4rem;flex-shrink:0}
+.tool-name{font-weight:600;font-size:.95rem;margin-bottom:2px}
+.tool-desc{font-size:.78rem;color:var(--gray);line-height:1.3}
+.btn-connect{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.4);color:var(--gold);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;padding:7px 14px;border-radius:50px;cursor:pointer;white-space:nowrap;transition:background .2s,box-shadow .2s;flex-shrink:0}
+.btn-connect:hover{background:rgba(201,168,76,.22);box-shadow:0 0 14px var(--gold-glow)}
+.btn-connect.connected-btn{background:rgba(100,200,100,.1);border-color:rgba(100,200,100,.4);color:#6dc86d}
+.tool-input{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--white);font-family:'Inter',sans-serif;font-size:.85rem;padding:8px 12px;border-radius:8px;outline:none;width:100%;margin-top:8px}
+.tool-input:focus{border-color:var(--gold)}
+.skip-link{text-align:center;font-size:.85rem;color:var(--gray);cursor:pointer;margin-bottom:24px}
+.skip-link:hover{color:var(--white)}
+
+/* CHECKBOXES */
+.check-list{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.check-item{display:flex;align-items:center;gap:14px;cursor:pointer;padding:14px 18px;background:var(--glass);border:1px solid rgba(255,255,255,.07);border-radius:10px;transition:border-color .2s}
+.check-item:hover{border-color:rgba(201,168,76,.25)}
+.check-item input[type="checkbox"]{display:none}
+.check-box{width:22px;height:22px;border:1px solid rgba(201,168,76,.4);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s}
+.check-item input:checked ~ .check-box,.check-item.checked .check-box{background:var(--gold);border-color:var(--gold)}
+.check-item input:checked ~ .check-box::after,.check-item.checked .check-box::after{content:'✓';color:#080810;font-size:.85rem;font-weight:700}
+.check-text{font-size:.95rem;font-weight:500}
+
+/* TIME ROW */
+.time-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px}
+@media(max-width:500px){.time-row{grid-template-columns:1fr}}
+
+/* STYLE CARDS */
+.style-cards{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.style-card{background:var(--glass);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);padding:20px 22px;cursor:pointer;transition:border-color .3s,background .3s;display:flex;align-items:flex-start;gap:16px}
+.style-card:hover{border-color:rgba(201,168,76,.25)}
+.style-card.selected{border-color:var(--gold);background:rgba(201,168,76,.06)}
+.style-icon{font-size:1.5rem;flex-shrink:0;margin-top:2px}
+.style-card h4{font-size:.95rem;font-weight:600;margin-bottom:4px}
+.style-card p{font-size:.85rem;color:var(--gray)}
+
+/* RADIO GROUP */
+.radio-group{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.radio-item{display:flex;align-items:center;gap:12px;cursor:pointer;padding:12px 18px;background:var(--glass);border:1px solid rgba(255,255,255,.07);border-radius:10px;transition:border-color .2s}
+.radio-item:hover{border-color:rgba(201,168,76,.2)}
+.radio-item.selected{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.04)}
+.radio-dot{width:18px;height:18px;border-radius:50%;border:1px solid rgba(201,168,76,.5);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.radio-item.selected .radio-dot{border-color:var(--gold)}
+.radio-item.selected .radio-dot::after{content:'';width:9px;height:9px;border-radius:50%;background:var(--gold);display:block}
+.radio-text span{display:block;font-size:.9rem;font-weight:500}
+.radio-sub{font-size:.8rem;color:var(--gray)}
+
+/* STEP 5 — SUMMARY */
+.summary-card{background:var(--glass);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);padding:28px;margin-bottom:32px}
+.summary-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.summary-row:last-child{border-bottom:none}
+.summary-check{color:var(--gold);font-size:1rem;flex-shrink:0}
+.summary-label{font-size:.8rem;color:var(--gray);min-width:160px}
+.summary-val{font-size:.9rem;font-weight:600;color:var(--white)}
+
+/* OLIVIA AVATAR */
+.avatar-wrap{margin:0 auto 32px;width:80px;height:80px;border-radius:50%;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;animation:breathe 3s ease-in-out infinite}
+@keyframes breathe{0%,100%{box-shadow:0 0 20px #C9A84C33}50%{box-shadow:0 0 50px #C9A84C88}}
+.avatar-letter{font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:900;color:var(--gold)}
+
+/* BUTTONS */
+.btn-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:space-between;margin-top:40px;align-items:center}
+.btn-next{background:var(--gold);color:#080810;font-family:'Inter',sans-serif;font-weight:700;font-size:1rem;padding:14px 32px;border-radius:50px;border:none;cursor:pointer;transition:box-shadow .2s,transform .15s}
+.btn-next:hover{box-shadow:0 0 30px var(--gold-glow);transform:translateY(-2px)}
+.btn-back{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--gray);font-family:'Inter',sans-serif;font-size:.9rem;padding:12px 24px;border-radius:50px;cursor:pointer;transition:border-color .2s,color .2s}
+.btn-back:hover{border-color:var(--gray);color:var(--white)}
+.btn-tele{background:var(--gold);color:#080810;font-family:'Inter',sans-serif;font-weight:700;font-size:1.05rem;padding:16px 36px;border-radius:50px;border:none;cursor:pointer;transition:box-shadow .2s,transform .15s;text-decoration:none;display:inline-block}
+.btn-tele:hover{box-shadow:0 0 40px var(--gold-glow);transform:translateY(-2px)}
+.btn-secondary{background:transparent;border:1px solid rgba(201,168,76,.4);color:var(--gold);font-family:'Inter',sans-serif;font-weight:600;font-size:.95rem;padding:13px 28px;border-radius:50px;cursor:pointer;transition:background .2s;text-decoration:none;display:inline-block}
+.btn-secondary:hover{background:rgba(201,168,76,.08)}
+.final-note{text-align:center;color:var(--gray);font-size:.85rem;margin-top:16px;line-height:1.7}
+
+/* SECTION LABELS */
+.sub-label{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px;margin-top:8px}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">OLIVIA</div>
+  <div class="step-count">Step <span id="stepNumLabel">1</span> of 5</div>
+</div>
+<!-- PROGRESS STRIP -->
+<div class="progress-strip">
+  <div class="prog-seg active" id="seg1"></div>
+  <div class="prog-seg" id="seg2"></div>
+  <div class="prog-seg" id="seg3"></div>
+  <div class="prog-seg" id="seg4"></div>
+  <div class="prog-seg" id="seg5"></div>
+</div>
+
+<div class="steps-wrap">
+
+  <!-- ── STEP 1 ─────────────────────────────── -->
+  <div class="step active" id="step1">
+    <div class="step-label">Step 1 of 5</div>
+    <h2>First, let's tell Olivia about your business.</h2>
+    <p class="step-sub">The more Olivia knows — the more valuable she becomes. This takes 2 minutes.</p>
+
+    <div class="field"><label>Business name</label><input type="text" id="bizName" placeholder="e.g. Elegancy Media"></div>
+    <div class="field">
+      <label>What type of business?</label>
+      <select id="bizType">
+        <option value="">Select your business type</option>
+        <option value="ofm">OFM Agency</option>
+        <option value="ecom">E-commerce</option>
+        <option value="marketing">Marketing Agency</option>
+        <option value="coaching">Coaching / Consulting</option>
+        <option value="saas">SaaS</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Monthly revenue range</label>
+      <select id="revenue">
+        <option value="">Select revenue range</option>
+        <option value="under10k">Under $10K</option>
+        <option value="10k-50k">$10K – $50K</option>
+        <option value="50k-100k">$50K – $100K</option>
+        <option value="100k-500k">$100K – $500K</option>
+        <option value="500k+">$500K+</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Team size</label>
+      <select id="teamSize">
+        <option value="">Select team size</option>
+        <option value="solo">Just me</option>
+        <option value="2-5">2 – 5</option>
+        <option value="6-15">6 – 15</option>
+        <option value="15+">15+</option>
+      </select>
+    </div>
+    <div class="field"><label>Biggest challenge right now</label><textarea id="challenge" placeholder="e.g. I spend too much time on admin tasks and not enough time on growth..."></textarea></div>
+
+    <div class="btn-row" style="justify-content:flex-end">
+      <button class="btn-next" onclick="goStep(2)">Continue &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 2 ─────────────────────────────── -->
+  <div class="step" id="step2">
+    <div class="step-label">Step 2 of 5</div>
+    <h2>Connect your tools.</h2>
+    <p class="step-sub">Olivia works with what you already use. Connect what you have — skip the rest for now.</p>
+
+    <div class="tools-grid">
+      <div class="tool-card" id="tool-gmail">
+        <div class="tool-info">
+          <div class="tool-icon">📧</div>
+          <div><div class="tool-name">Gmail</div><div class="tool-desc">Read emails, send on your behalf, urgent alerts</div></div>
+        </div>
+        <button class="btn-connect" onclick="connectTool('gmail')">Connect</button>
+      </div>
+      <div class="tool-card" id="tool-calendar">
+        <div class="tool-info">
+          <div class="tool-icon">📅</div>
+          <div><div class="tool-name">Google Calendar</div><div class="tool-desc">Manage schedule, create events, prep briefs</div></div>
+        </div>
+        <button class="btn-connect" onclick="connectTool('calendar')">Connect</button>
+      </div>
+      <div class="tool-card" id="tool-drive">
+        <div class="tool-info">
+          <div class="tool-icon">📁</div>
+          <div><div class="tool-name">Google Drive</div><div class="tool-desc">Access your files and documents</div></div>
+        </div>
+        <button class="btn-connect" onclick="connectTool('drive')">Connect</button>
+      </div>
+      <div class="tool-card" id="tool-sheets">
+        <div class="tool-info">
+          <div class="tool-icon">📊</div>
+          <div><div class="tool-name">Google Sheets</div><div class="tool-desc">Read your P&amp;L and financial trackers</div></div>
+        </div>
+        <button class="btn-connect" onclick="connectTool('sheets')">Connect</button>
+      </div>
+      <div class="tool-card" id="tool-notion">
+        <div class="tool-info">
+          <div class="tool-icon">📋</div>
+          <div><div class="tool-name">Notion</div><div class="tool-desc">Tasks, SOPs, model tracker</div></div>
+        </div>
+        <button class="btn-connect" onclick="connectTool('notion')">Connect</button>
+      </div>
+      <div class="tool-card" id="tool-ghl">
+        <div class="tool-info">
+          <div class="tool-icon">🔗</div>
+          <div>
+            <div class="tool-name">GoHighLevel</div>
+            <div class="tool-desc">CRM, pipeline, contacts</div>
+            <input type="text" class="tool-input" id="ghl-key" placeholder="Paste API key..." oninput="checkGHLKey()">
+          </div>
+        </div>
+        <button class="btn-connect" id="ghl-btn" onclick="connectTool('ghl')">Connect</button>
+      </div>
+    </div>
+
+    <div class="skip-link" onclick="goStep(3)">Skip for now — connect more tools in settings later</div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="goStep(1)">&larr; Back</button>
+      <button class="btn-next" onclick="goStep(3)">Continue &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 3 ─────────────────────────────── -->
+  <div class="step" id="step3">
+    <div class="step-label">Step 3 of 5</div>
+    <h2>Your morning briefing.</h2>
+    <p class="step-sub">What do you want Olivia to cover every morning? All are on by default — uncheck anything you don't want.</p>
+
+    <div class="check-list">
+      <label class="check-item checked" onclick="toggleCheck(this)">
+        <input type="checkbox" checked>
+        <div class="check-box"></div>
+        <span class="check-text">Revenue and financial snapshot</span>
+      </label>
+      <label class="check-item checked" onclick="toggleCheck(this)">
+        <input type="checkbox" checked>
+        <div class="check-box"></div>
+        <span class="check-text">New emails and urgent messages</span>
+      </label>
+      <label class="check-item checked" onclick="toggleCheck(this)">
+        <input type="checkbox" checked>
+        <div class="check-box"></div>
+        <span class="check-text">Today's calendar and meetings</span>
+      </label>
+      <label class="check-item checked" onclick="toggleCheck(this)">
+        <input type="checkbox" checked>
+        <div class="check-box"></div>
+        <span class="check-text">Team and creator status</span>
+      </label>
+      <label class="check-item checked" onclick="toggleCheck(this)">
+        <input type="checkbox" checked>
+        <div class="check-box"></div>
+        <span class="check-text">Content opportunities</span>
+      </label>
+      <label class="check-item checked" onclick="toggleCheck(this)">
+        <input type="checkbox" checked>
+        <div class="check-box"></div>
+        <span class="check-text">Pipeline and leads update</span>
+      </label>
+    </div>
+
+    <div class="sub-label">Delivery time</div>
+    <div class="time-row">
+      <div class="field" style="margin:0">
+        <label>Time</label>
+        <input type="time" id="briefTime" value="09:00">
+      </div>
+      <div class="field" style="margin:0">
+        <label>Timezone</label>
+        <select id="timezone">
+          <option value="America/New_York">Eastern (ET)</option>
+          <option value="America/Chicago">Central (CT)</option>
+          <option value="America/Denver">Mountain (MT)</option>
+          <option value="America/Los_Angeles">Pacific (PT)</option>
+          <option value="Europe/London">London (GMT)</option>
+          <option value="Europe/Paris">Paris (CET)</option>
+          <option value="Asia/Dubai">Dubai (GST)</option>
+          <option value="Asia/Tokyo">Tokyo (JST)</option>
+          <option value="Australia/Sydney">Sydney (AEST)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="goStep(2)">&larr; Back</button>
+      <button class="btn-next" onclick="goStep(4)">Continue &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 4 ─────────────────────────────── -->
+  <div class="step" id="step4">
+    <div class="step-label">Step 4 of 5</div>
+    <h2>Customize how Olivia talks to you.</h2>
+    <p class="step-sub">She adapts to your style. Pick what feels right — you can change this anytime.</p>
+
+    <div class="sub-label">Communication style</div>
+    <div class="style-cards" id="styleCards">
+      <div class="style-card selected" onclick="selectStyle(this,'direct')">
+        <div class="style-icon">🎯</div>
+        <div><h4>Direct and fast</h4><p>Just the facts. No fluff. Maximum efficiency.</p></div>
+      </div>
+      <div class="style-card" onclick="selectStyle(this,'warm')">
+        <div class="style-icon">🤝</div>
+        <div><h4>Warm and supportive</h4><p>Friendly, encouraging, detailed explanations.</p></div>
+      </div>
+      <div class="style-card" onclick="selectStyle(this,'intense')">
+        <div class="style-icon">⚡</div>
+        <div><h4>Intense and pushing</h4><p>Goggins mode. Push me harder. No excuses.</p></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Response length</div>
+    <div class="radio-group" id="formatGroup">
+      <div class="radio-item" onclick="selectRadio('formatGroup',this,'short')">
+        <div class="radio-dot"></div>
+        <div class="radio-text"><span>Short and punchy</span><span class="radio-sub">Under 3 sentences when possible</span></div>
+      </div>
+      <div class="radio-item selected" onclick="selectRadio('formatGroup',this,'balanced')">
+        <div class="radio-dot"></div>
+        <div class="radio-text"><span>Balanced</span><span class="radio-sub">Detail when needed, brief when not</span></div>
+      </div>
+      <div class="radio-item" onclick="selectRadio('formatGroup',this,'comprehensive')">
+        <div class="radio-dot"></div>
+        <div class="radio-text"><span>Comprehensive</span><span class="radio-sub">Full context always</span></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Proactive alert sensitivity</div>
+    <div class="radio-group" id="alertGroup">
+      <div class="radio-item" onclick="selectRadio('alertGroup',this,'critical')">
+        <div class="radio-dot"></div>
+        <div class="radio-text"><span>Only critical issues</span></div>
+      </div>
+      <div class="radio-item" onclick="selectRadio('alertGroup',this,'important')">
+        <div class="radio-dot"></div>
+        <div class="radio-text"><span>Important updates</span></div>
+      </div>
+      <div class="radio-item selected" onclick="selectRadio('alertGroup',this,'everything')">
+        <div class="radio-dot"></div>
+        <div class="radio-text"><span>Everything relevant</span><span class="radio-sub">Recommended</span></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="goStep(3)">&larr; Back</button>
+      <button class="btn-next" onclick="saveAndFinish()">Finish Setup &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 5 ─────────────────────────────── -->
+  <div class="step" id="step5">
+    <div class="step-label">Step 5 of 5</div>
+
+    <div class="avatar-wrap"><div class="avatar-letter">O</div></div>
+
+    <h2 style="text-align:center">Olivia is ready for you.</h2>
+    <p class="step-sub" style="text-align:center;margin:0 auto 32px">Your setup is complete. Here is what is ready for you right now.</p>
+
+    <div class="summary-card" id="summaryCard">
+      <div class="summary-row">
+        <span class="summary-check">✓</span>
+        <span class="summary-label">Business profile</span>
+        <span class="summary-val" id="sum-biz">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-check">✓</span>
+        <span class="summary-label">Tools connected</span>
+        <span class="summary-val" id="sum-tools">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-check">✓</span>
+        <span class="summary-label">Morning briefing</span>
+        <span class="summary-val" id="sum-brief">—</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-check">✓</span>
+        <span class="summary-label">Communication style</span>
+        <span class="summary-val" id="sum-style">—</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px">
+      <a href="https://t.me/ElegancyOliviaBot" class="btn-tele" target="_blank">Meet Olivia on Telegram &rarr;</a>
+      <a href="#" class="btn-secondary" id="desktopLink">Download Desktop App &rarr;</a>
+    </div>
+    <p class="final-note" id="briefNote">Your first morning briefing arrives tomorrow at 9:00 AM.<br>Olivia is already learning about your business.</p>
+  </div>
+
+</div><!-- /steps-wrap -->
+
+<!-- CONFETTI (step 5 only) -->
+<canvas id="confetti5" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;display:none"></canvas>
+
+<script>
+/* ── STATE ────────────────────────────────── */
+const state = {
+  currentStep: 1,
+  style: 'direct',
+  format: 'balanced',
+  alerts: 'everything',
+  connectedTools: [],
+};
+
+/* ── NAVIGATION ───────────────────────────── */
+function goStep(n){
+  document.getElementById('step'+state.currentStep).classList.remove('active');
+  state.currentStep = n;
+  document.getElementById('step'+n).classList.add('active');
+  document.getElementById('stepNumLabel').textContent = n;
+  updateProgress(n);
+  window.scrollTo({top:0, behavior:'smooth'});
+  if(n===5) showStep5();
+}
+
+function updateProgress(n){
+  for(let i=1;i<=5;i++){
+    const seg = document.getElementById('seg'+i);
+    seg.className = 'prog-seg' + (i<n?' done': i===n?' active':'');
+  }
+}
+
+/* ── TOOLS ────────────────────────────────── */
+function connectTool(id){
+  const card = document.getElementById('tool-'+id);
+  const btn = card.querySelector('.btn-connect');
+  if(state.connectedTools.includes(id)){
+    state.connectedTools = state.connectedTools.filter(t=>t!==id);
+    card.classList.remove('connected');
+    btn.textContent='Connect'; btn.classList.remove('connected-btn');
+  } else {
+    // Simulate OAuth popup — in prod this opens real OAuth
+    btn.textContent='Connecting...'; btn.disabled=true;
+    setTimeout(()=>{
+      state.connectedTools.push(id);
+      card.classList.add('connected');
+      btn.textContent='✓ Connected'; btn.classList.add('connected-btn'); btn.disabled=false;
+    }, 900);
+  }
+}
+function checkGHLKey(){
+  const val = document.getElementById('ghl-key').value.trim();
+  const btn = document.getElementById('ghl-btn');
+  btn.style.opacity = val.length > 8 ? '1' : '.5';
+}
+
+/* ── CHECKBOXES ───────────────────────────── */
+function toggleCheck(el){
+  el.classList.toggle('checked');
+  const cb = el.querySelector('input[type="checkbox"]');
+  if(cb) cb.checked = !cb.checked;
+}
+
+/* ── STYLE SELECT ─────────────────────────── */
+function selectStyle(el, val){
+  document.querySelectorAll('.style-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.style = val;
+}
+
+/* ── RADIO SELECT ─────────────────────────── */
+function selectRadio(groupId, el, val){
+  document.querySelectorAll('#'+groupId+' .radio-item').forEach(r=>r.classList.remove('selected'));
+  el.classList.add('selected');
+  state[groupId === 'formatGroup' ? 'format' : 'alerts'] = val;
+}
+
+/* ── SAVE AND FINISH ──────────────────────── */
+function saveAndFinish(){
+  // Collect all state
+  state.bizName = document.getElementById('bizName').value || 'Your business';
+  state.bizType = document.getElementById('bizType').value;
+  state.revenue = document.getElementById('revenue').value;
+  state.teamSize = document.getElementById('teamSize').value;
+  state.briefTime = document.getElementById('briefTime').value || '09:00';
+  state.timezone = document.getElementById('timezone').value;
+
+  // Save to localStorage (no API, no server — pure client-side)
+  try{ localStorage.setItem('olivia_onboarding', JSON.stringify(state)); }catch(e){}
+
+  goStep(5);
+}
+
+/* ── STEP 5 DISPLAY ───────────────────────── */
+function showStep5(){
+  document.getElementById('sum-biz').textContent = state.bizName || '—';
+  const toolCount = state.connectedTools.length;
+  document.getElementById('sum-tools').textContent = toolCount + ' of 6 connected';
+  const fmt = t => { const [h,m]=t.split(':'); const hr=parseInt(h); return (hr>12?hr-12:hr||12)+':'+m+(hr>=12?' PM':' AM'); };
+  document.getElementById('sum-brief').textContent = fmt(state.briefTime||'09:00') + ' daily';
+  const styleNames = {direct:'Direct and fast',warm:'Warm and supportive',intense:'Intense and pushing'};
+  document.getElementById('sum-style').textContent = styleNames[state.style]||'Direct and fast';
+  document.getElementById('briefNote').innerHTML = 'Your first morning briefing arrives tomorrow at ' + fmt(state.briefTime||'09:00') + '.<br>Olivia is already learning about your business.';
+
+  // Fire confetti
+  const canvas = document.getElementById('confetti5');
+  canvas.style.display = 'block';
+  launchConfetti(canvas);
+}
+
+function launchConfetti(canvas){
+  const ctx = canvas.getContext('2d');
+  let W,H,pieces=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+  const colors=['#C9A84C','#E8C96A','#4C8BC9','#ffffff','#F0D060'];
+  function Piece(){this.x=Math.random()*W;this.y=-20;this.r=Math.random()*6+3;this.color=colors[Math.floor(Math.random()*colors.length)];this.speed=Math.random()*3+1.5;this.drift=(Math.random()-.5)*2;this.spin=(Math.random()-.5)*.2;this.angle=0;this.life=1;this.decay=.004+Math.random()*.003}
+  for(let i=0;i<200;i++) pieces.push(new Piece());
+  function draw(){ctx.clearRect(0,0,W,H);pieces=pieces.filter(p=>p.life>0);pieces.forEach(p=>{ctx.save();ctx.globalAlpha=p.life*.8;ctx.translate(p.x,p.y);ctx.rotate(p.angle);ctx.fillStyle=p.color;ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.8);ctx.restore();p.y+=p.speed;p.x+=p.drift;p.angle+=p.spin;p.life-=p.decay});if(pieces.length)requestAnimationFrame(draw);else canvas.style.display='none'}
+  draw();
+}
+</script>
+</body>
+</html>

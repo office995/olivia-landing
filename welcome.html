@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to Olivia — Your Unfair Advantage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080810;--gold:#C9A84C;--gold-glow:#C9A84C44;--gold-dim:#8a6f2f;
+  --white:#f0f0f8;--gray:#8888aa;--glass:rgba(255,255,255,0.05);--radius:14px;
+}
+html,body{height:100%;background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden}
+/* CONFETTI CANVAS */
+#confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+/* MAIN */
+.page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px}
+/* WORDMARK */
+.wordmark{font-family:'Orbitron',sans-serif;font-size:clamp(2.5rem,8vw,5rem);font-weight:900;color:var(--gold);letter-spacing:6px;animation:breathe 3s ease-in-out infinite;margin-bottom:32px}
+@keyframes breathe{0%,100%{text-shadow:0 0 30px #C9A84C66,0 0 60px #C9A84C22}50%{text-shadow:0 0 60px #C9A84Caa,0 0 120px #C9A84C55}}
+/* HEADLINES */
+h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:600;line-height:1.2;max-width:700px;margin-bottom:16px}
+.sub{font-size:clamp(1rem,2vw,1.2rem);color:var(--gray);max-width:580px;line-height:1.7;margin-bottom:48px}
+/* PROGRESS BAR */
+.progress-wrap{width:100%;max-width:480px;margin-bottom:48px}
+.progress-label{font-size:.8rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;opacity:0;animation:fadeIn .3s .5s forwards}
+.progress-track{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:2px;transition:width 3s cubic-bezier(.4,0,.2,1)}
+.progress-fill.go{width:100%}
+/* CARDS */
+.cards{display:flex;flex-direction:column;gap:14px;max-width:480px;width:100%;margin-bottom:44px}
+.card{background:var(--glass);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);padding:18px 24px;display:flex;align-items:center;gap:16px;opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease,border-color .3s}
+.card.show{opacity:1;transform:translateY(0)}
+.card.show{border-color:rgba(201,168,76,.3)}
+.card-check{width:32px;height:32px;border-radius:50%;background:rgba(201,168,76,.15);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem}
+.card-text{text-align:left}
+.card-text strong{display:block;font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:2px}
+.card-text span{font-size:.8rem;color:var(--gray)}
+/* CTA */
+.btn-main{background:var(--gold);color:#080810;font-family:'Inter',sans-serif;font-weight:700;font-size:1.1rem;padding:16px 40px;border-radius:50px;border:none;cursor:pointer;transition:box-shadow .2s,transform .15s;text-decoration:none;display:inline-block;opacity:0;animation:fadeIn .5s 4s forwards}
+.btn-main:hover{box-shadow:0 0 40px var(--gold-glow);transform:translateY(-2px)}
+.btn-note{font-size:.85rem;color:var(--gray);margin-top:14px;opacity:0;animation:fadeIn .5s 4.2s forwards}
+.support-note{margin-top:28px;font-size:.8rem;color:var(--gray);opacity:.7;opacity:0;animation:fadeIn .5s 4.4s forwards}
+.support-note a{color:var(--gold)}
+@keyframes fadeIn{to{opacity:1}}
+@media(max-width:600px){.cards{max-width:100%}}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="page" id="page">
+  <div class="wordmark">OLIVIA</div>
+  <h1>Welcome to your unfair advantage.</h1>
+  <p class="sub">You just made the smartest business decision you will make this year. Olivia is being configured for your business right now.</p>
+
+  <div class="progress-wrap" id="progressWrap" style="opacity:0;animation:fadeIn .4s .3s forwards">
+    <div class="progress-label">Setting up your workspace...</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="cards" id="cards">
+    <div class="card" id="card1">
+      <div class="card-check">✓</div>
+      <div class="card-text">
+        <strong>Payment confirmed — <span id="tierName">Starter</span> plan activated</strong>
+        <span>Your subscription is live and your account is ready</span>
+      </div>
+    </div>
+    <div class="card" id="card2">
+      <div class="card-check">✓</div>
+      <div class="card-text">
+        <strong>Your AI workspace is being prepared</strong>
+        <span>Olivia is loading your integrations and preferences</span>
+      </div>
+    </div>
+    <div class="card" id="card3">
+      <div class="card-check">✓</div>
+      <div class="card-text">
+        <strong>Welcome email sent to <span id="customerEmail">your inbox</span></strong>
+        <span>Check your email for your setup instructions</span>
+      </div>
+    </div>
+  </div>
+
+  <a href="onboarding.html" class="btn-main" id="ctaBtn">Set Up Olivia Now &rarr;</a>
+  <p class="btn-note">Takes less than 10 minutes. We guide you through every step.</p>
+  <p class="support-note">Questions? Telegram us at <a href="https://t.me/ElegancyOliviaBot">@ElegancyOliviaBot</a></p>
+</div>
+
+<script>
+/* ── SECURITY: Verify session_id param ───────────────────── */
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+  const plan = params.get('plan');
+  const email = params.get('email');
+  // If no session_id at all — redirect to landing
+  if(!sessionId && !params.get('demo')) {
+    window.location.href = 'index.html';
+    return;
+  }
+  // Populate dynamic text
+  if(plan) {
+    const names = {starter:'Starter',professional:'Professional',agency:'Agency'};
+    document.getElementById('tierName').textContent = names[plan.toLowerCase()] || plan;
+  }
+  if(email) {
+    document.getElementById('customerEmail').textContent = decodeURIComponent(email);
+  }
+})();
+
+/* ── CONFETTI ────────────────────────────────────────────── */
+(function(){
+  const c = document.getElementById('confetti');
+  const ctx = c.getContext('2d');
+  let W, H, pieces = [];
+  function resize(){ W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+
+  const colors = ['#C9A84C','#E8C96A','#F0D060','#4C8BC9','#ffffff'];
+  function Piece(){
+    this.x = Math.random()*W;
+    this.y = Math.random()*H - H;
+    this.r = Math.random()*6+3;
+    this.color = colors[Math.floor(Math.random()*colors.length)];
+    this.speed = Math.random()*3+1;
+    this.angle = Math.random()*Math.PI*2;
+    this.spin = (Math.random()-.5)*.15;
+    this.drift = (Math.random()-.5)*1.5;
+    this.alpha = Math.random()*.7+.3;
+    this.life = 1;
+    this.decay = Math.random()*.003+.002;
+  }
+
+  let frameCount = 0;
+  function burst(){
+    for(let i=0;i<180;i++) pieces.push(new Piece());
+  }
+  setTimeout(burst, 100);
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pieces = pieces.filter(p => p.life > 0);
+    pieces.forEach(p=>{
+      ctx.save();
+      ctx.globalAlpha = p.alpha * p.life;
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r*1.6);
+      ctx.restore();
+      p.y += p.speed;
+      p.x += p.drift;
+      p.angle += p.spin;
+      p.life -= p.decay;
+    });
+    frameCount++;
+    if(frameCount === 180) burst(); // second burst at 3s
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── PROGRESS + CARD SEQUENCE ──────────────────────────────── */
+window.addEventListener('load', ()=>{
+  // Start progress bar
+  setTimeout(()=>{
+    document.getElementById('progressFill').classList.add('go');
+  }, 600);
+
+  // Cards appear one by one
+  setTimeout(()=> document.getElementById('card1').classList.add('show'), 1200);
+  setTimeout(()=> document.getElementById('card2').classList.add('show'), 2000);
+  setTimeout(()=> document.getElementById('card3').classList.add('show'), 2800);
+});
+</script>
+</body>
+</html>

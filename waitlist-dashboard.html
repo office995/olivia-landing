@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Spot Is Reserved — Olivia AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080810;--bg2:#0d0d1a;--gold:#C9A84C;--gold-glow:#C9A84C44;--gold-dim:#8a6f2f;
+  --blue:#4C8BC9;--white:#f0f0f8;--gray:#8888aa;--glass:rgba(255,255,255,0.04);--radius:14px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden}
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.4}
+
+/* NAV */
+nav{position:relative;z-index:10;display:flex;align-items:center;justify-content:center;padding:28px 40px;border-bottom:1px solid rgba(255,255,255,.06)}
+.logo{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:700;color:var(--gold);letter-spacing:3px;text-shadow:0 0 20px var(--gold-glow)}
+
+/* HERO BADGE */
+.hero{position:relative;z-index:1;text-align:center;padding:80px 24px 60px}
+.reserved-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.35);border-radius:50px;padding:8px 20px;font-size:.8rem;font-weight:600;color:var(--gold);letter-spacing:1px;margin-bottom:28px;text-transform:uppercase}
+.reserved-badge::before{content:'';width:8px;height:8px;background:var(--gold);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(1.8rem,5vw,3.2rem);font-weight:700;line-height:1.2;margin-bottom:12px}
+.hero p{font-size:1.1rem;color:var(--gray);max-width:520px;margin:0 auto 48px;line-height:1.7}
+
+/* POSITION CARD */
+.pos-card{max-width:480px;margin:0 auto 60px;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.25);border-radius:20px;padding:36px;text-align:center}
+.pos-number{font-family:'Orbitron',sans-serif;font-size:clamp(3rem,10vw,6rem);font-weight:900;color:var(--gold);line-height:1;animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{0%,100%{text-shadow:0 0 30px #C9A84C55}50%{text-shadow:0 0 60px #C9A84C99}}
+.pos-label{font-size:.8rem;letter-spacing:3px;color:var(--gray);text-transform:uppercase;margin-top:8px;margin-bottom:24px}
+.pos-bar-wrap{margin-bottom:12px}
+.pos-bar-track{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.pos-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:3px;width:0;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+.pos-bar-labels{display:flex;justify-content:space-between;font-size:.75rem;color:var(--gray);margin-top:6px}
+.pos-ahead{font-size:.85rem;color:var(--gray);margin-top:12px}
+.pos-ahead span{color:var(--white);font-weight:600}
+
+/* SECTION */
+section{position:relative;z-index:1;padding:60px 24px}
+.inner{max-width:960px;margin:0 auto}
+.sec-label{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px}
+.sec-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,3vw,2.2rem);font-weight:700;line-height:1.2;margin-bottom:10px}
+.sec-sub{color:var(--gray);font-size:1rem;max-width:560px;line-height:1.7;margin-bottom:40px}
+
+/* FEATURE PREVIEW CARDS */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.feat-card{background:var(--glass);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);padding:24px 22px;transition:border-color .3s,transform .3s}
+.feat-card:hover{border-color:rgba(201,168,76,.35);transform:translateY(-3px)}
+.feat-badge{display:inline-block;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);border-radius:50px;font-size:.7rem;font-weight:600;color:var(--gold);padding:3px 10px;margin-bottom:12px;letter-spacing:.5px}
+.feat-card h4{font-size:1rem;font-weight:600;margin-bottom:6px;color:var(--white)}
+.feat-card p{font-size:.85rem;color:var(--gray);line-height:1.6}
+
+/* REFERRAL CARD */
+.referral-card{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.2);border-radius:20px;padding:36px;text-align:center;max-width:600px;margin:0 auto}
+.ref-title{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:10px}
+.ref-sub{color:var(--gray);font-size:.95rem;margin-bottom:28px;line-height:1.6}
+.ref-link-wrap{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;justify-content:center}
+.ref-link-box{flex:1;min-width:220px;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);color:var(--gold);font-size:.85rem;padding:12px 16px;border-radius:10px;font-family:'Inter',sans-serif;outline:none;cursor:pointer}
+.btn-copy{background:var(--gold);color:#080810;font-family:'Inter',sans-serif;font-weight:700;font-size:.85rem;padding:12px 20px;border-radius:10px;border:none;cursor:pointer;white-space:nowrap;transition:box-shadow .2s}
+.btn-copy:hover{box-shadow:0 0 20px var(--gold-glow)}
+.ref-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap}
+.ref-stat{text-align:center}
+.ref-stat-num{font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:700;color:var(--gold)}
+.ref-stat-label{font-size:.8rem;color:var(--gray);margin-top:4px}
+
+/* LIVE COUNTER */
+.counter-strip{background:rgba(201,168,76,.06);border-top:1px solid rgba(201,168,76,.12);border-bottom:1px solid rgba(201,168,76,.12);padding:28px 24px;text-align:center;position:relative;z-index:1}
+.counter-num{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,6vw,3.5rem);font-weight:900;color:var(--gold)}
+.counter-label{font-size:.85rem;color:var(--gray);margin-top:4px;letter-spacing:1px}
+
+/* FINAL CTA */
+.final{position:relative;z-index:1;text-align:center;padding:80px 24px}
+.social-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.social-btn{background:var(--glass);border:1px solid rgba(255,255,255,.1);color:var(--gray);font-family:'Inter',sans-serif;font-size:.9rem;font-weight:500;padding:11px 22px;border-radius:50px;cursor:pointer;transition:border-color .2s,color .2s;text-decoration:none}
+.social-btn:hover{border-color:rgba(201,168,76,.4);color:var(--gold)}
+.upgrade-btn{background:var(--gold);color:#080810;font-family:'Inter',sans-serif;font-weight:700;font-size:1rem;padding:14px 32px;border-radius:50px;border:none;cursor:pointer;transition:box-shadow .2s,transform .15s;text-decoration:none;display:inline-block;margin-top:12px}
+.upgrade-btn:hover{box-shadow:0 0 30px var(--gold-glow);transform:translateY(-2px)}
+
+/* FOOTER */
+footer{position:relative;z-index:1;text-align:center;padding:32px 24px;border-top:1px solid rgba(255,255,255,.06);font-size:.8rem;color:var(--gray)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:none}
+
+@media(max-width:600px){.pos-card{padding:24px}.referral-card{padding:24px}}
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+
+<nav><div class="logo">OLIVIA</div></nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="reserved-badge">Your spot is reserved</div>
+  <h1>You're ahead of<br>the curve.</h1>
+  <p>Olivia is coming. You got in early. Here is your position in line and everything that is coming your way.</p>
+
+  <div class="pos-card reveal">
+    <div class="pos-number" id="posNum">#—</div>
+    <div class="pos-label">Your position on the waitlist</div>
+    <div class="pos-bar-wrap">
+      <div class="pos-bar-track"><div class="pos-bar-fill" id="posFill"></div></div>
+      <div class="pos-bar-labels"><span>1</span><span id="totalLabel">—</span></div>
+    </div>
+    <div class="pos-ahead"><span id="aheadNum">—</span> people ahead of you</div>
+  </div>
+</div>
+
+<!-- LIVE COUNTER -->
+<div class="counter-strip">
+  <div class="counter-num" id="liveCount">—</div>
+  <div class="counter-label">entrepreneurs already on the waitlist</div>
+</div>
+
+<!-- WHAT IS COMING -->
+<section>
+  <div class="inner">
+    <p class="sec-label reveal">What you are getting</p>
+    <h2 class="sec-title reveal">Everything launching with Olivia.</h2>
+    <p class="sec-sub reveal">Here is a preview of what you unlock the day we go live.</p>
+    <div class="feat-grid">
+      <div class="feat-card reveal">
+        <div class="feat-badge">INCLUDED</div>
+        <h4>🌅 Daily Morning Briefing</h4>
+        <p>Revenue, emails, calendar, team status. Every morning before you open a single app. Your day starts with clarity.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-badge">INCLUDED</div>
+        <h4>🧠 Business Intelligence</h4>
+        <p>Ask anything about your business. Get live data from every tool you use. Answered in seconds.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-badge">INCLUDED</div>
+        <h4>👑 Great Minds Council</h4>
+        <p>Channel Bezos, Greene, Goggins — 23 of the greatest business minds in history. On demand. Instantly.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-badge">INCLUDED</div>
+        <h4>💰 AI Bookkeeper</h4>
+        <p>P&amp;L projections, tax reserves, spending budgets. Your finances always current. Always accurate.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-badge">STARTER+</div>
+        <h4>🤖 Agent Builder</h4>
+        <p>Tell Olivia to build an AI agent for any task. She builds it, deploys it, runs it. You just asked.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-badge">ALWAYS ON</div>
+        <h4>📈 Always Learning</h4>
+        <p>Olivia gets smarter about your specific business every single day. No other assistant does this.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REFERRAL -->
+<section style="padding-top:20px">
+  <div class="inner" style="text-align:center">
+    <p class="sec-label reveal" style="text-align:center">Move up the list</p>
+    <h2 class="sec-title reveal" style="text-align:center">Refer a friend. Jump the queue.</h2>
+    <p class="sec-sub reveal" style="margin:0 auto 36px">For every friend who joins the waitlist using your link — you move up 5 spots. Share it now.</p>
+
+    <div class="referral-card reveal">
+      <div class="ref-title">Your referral link</div>
+      <div class="ref-sub">Share this link. Every signup moves you 5 spots forward.</div>
+      <div class="ref-link-wrap">
+        <input class="ref-link-box" id="refLinkInput" readonly onclick="this.select()">
+        <button class="btn-copy" onclick="copyRef()">Copy Link</button>
+      </div>
+      <div class="ref-stats">
+        <div class="ref-stat"><div class="ref-stat-num" id="refCount">0</div><div class="ref-stat-label">Referrals</div></div>
+        <div class="ref-stat"><div class="ref-stat-num" id="spotsUp">0</div><div class="ref-stat-label">Spots moved up</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div class="final reveal">
+  <h2 style="font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,3vw,2.2rem);margin-bottom:12px">Don't want to wait?</h2>
+  <p style="color:var(--gray);font-size:1rem;max-width:480px;margin:0 auto;line-height:1.7">Early access members who upgrade now lock in 40% off their first 3 months — forever.</p>
+  <br>
+  <a href="index.html#pricing" class="upgrade-btn">Upgrade Now — Lock In 40% Off</a>
+
+  <div style="margin-top:48px">
+    <p style="color:var(--gray);font-size:.9rem;margin-bottom:20px">Follow Olivia updates</p>
+    <div class="social-links">
+      <a href="https://t.me/ElegancyOliviaBot" class="social-btn" target="_blank">Telegram</a>
+      <a href="#" class="social-btn">Twitter / X</a>
+      <a href="#" class="social-btn">Instagram</a>
+    </div>
+  </div>
+</div>
+
+<footer>&copy; 2026 Olivia AI &nbsp;·&nbsp; <a href="index.html" style="color:var(--gray)">Back to site</a></footer>
+
+<script>
+/* ── PARTICLES ─────────────────────────────── */
+(function(){
+  const c=document.getElementById('particles'),ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+  const G='201,168,76',B='76,139,201';
+  function mk(){return{x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.3,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3,col:Math.random()>.5?G:B,a:Math.random()*.5+.1}}
+  for(let i=0;i<90;i++)pts.push(mk());
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${p.col},${p.a})`;ctx.fill();
+      p.x+=p.dx;p.y+=p.dy;
+      if(p.x<0||p.x>W)p.dx*=-1;if(p.y<0||p.y>H)p.dy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── REVEAL ────────────────────────────────── */
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ── WAITLIST POSITION ─────────────────────── */
+(async function(){
+  // Get position from URL param
+  const params = new URLSearchParams(window.location.search);
+  const email = params.get('email');
+  const ref = params.get('ref');
+
+  // Set referral link
+  const baseUrl = window.location.origin + window.location.pathname.replace('waitlist-dashboard.html','');
+  const refCode = ref || btoa(email||'guest').slice(0,8);
+  const refLink = baseUrl + 'index.html?ref=' + refCode;
+  document.getElementById('refLinkInput').value = refLink;
+
+  // Fetch live count
+  try{
+    const r = await fetch('/count', {signal: AbortSignal.timeout(3000)});
+    if(r.ok){
+      const d = await r.json();
+      const total = d.count || 0;
+      document.getElementById('liveCount').textContent = total.toLocaleString();
+      document.getElementById('totalLabel').textContent = total;
+
+      // Simulate position (in real version this would come from server)
+      const pos = params.get('pos') ? parseInt(params.get('pos')) : Math.floor(total * .8) || 1;
+      document.getElementById('posNum').textContent = '#' + pos;
+      document.getElementById('aheadNum').textContent = (pos - 1).toLocaleString();
+
+      // Progress bar — how close to the front
+      const pct = Math.max(5, Math.min(95, (1 - pos/total) * 100));
+      setTimeout(()=>{ document.getElementById('posFill').style.width = pct + '%'; }, 300);
+    }
+  }catch(e){
+    document.getElementById('liveCount').textContent = '—';
+    document.getElementById('posNum').textContent = '#—';
+  }
+})();
+
+/* ── COPY REFERRAL ─────────────────────────── */
+function copyRef(){
+  const input = document.getElementById('refLinkInput');
+  input.select();
+  try{ navigator.clipboard.writeText(input.value); }catch(e){ document.execCommand('copy'); }
+  const btn = document.querySelector('.btn-copy');
+  const orig = btn.textContent;
+  btn.textContent = '✓ Copied!';
+  setTimeout(()=> btn.textContent = orig, 2000);
+}
+</script>
+</body>
+</html>
