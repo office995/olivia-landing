@@ -331,6 +331,37 @@
             cursor: default;
         }
 
+        /* API key input */
+        .api-key-wrap {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .api-key-wrap input {
+            flex: 1;
+            padding: 0.65rem 1rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--white);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .api-key-wrap input:focus { border-color: var(--gold-dim); }
+        .api-key-wrap input::placeholder { color: var(--gray); opacity: 0.5; }
+
+        .api-key-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.06em;
+        }
+
         @media (max-width: 640px) {
             body { padding: 1rem 0.75rem; }
             header h1 { font-size: 1.5rem; }
@@ -347,6 +378,10 @@
         </header>
 
         <div class="card input-section">
+            <div class="api-key-label">API Key</div>
+            <div class="api-key-wrap">
+                <input type="password" id="apiKeyInput" placeholder="sk-ant-... (paste your Anthropic API key)" autocomplete="off">
+            </div>
             <div class="textarea-wrap">
                 <textarea id="ideaInput" placeholder="Describe your idea — type it out or click the mic to speak it..."></textarea>
                 <div id="micContainer"></div>
@@ -429,6 +464,7 @@ RULES YOU MUST FOLLOW:
         const outputBody = document.getElementById('outputBody');
         const copyBtn = document.getElementById('copyBtn');
         const micContainer = document.getElementById('micContainer');
+        const apiKeyInput = document.getElementById('apiKeyInput');
 
         let isLoading = false;
         let recognition = null;
@@ -541,6 +577,12 @@ RULES YOU MUST FOLLOW:
                 return;
             }
 
+            const apiKey = apiKeyInput.value.trim();
+            if (!apiKey) {
+                showError('Please enter your Anthropic API key above.');
+                return;
+            }
+
             warning.classList.remove('visible');
             isLoading = true;
             updateGenerateBtn();
@@ -558,7 +600,8 @@ RULES YOU MUST FOLLOW:
                     headers: {
                         'Content-Type': 'application/json',
                         'anthropic-version': '2023-06-01',
-                        'anthropic-dangerous-direct-browser-access': 'true'
+                        'anthropic-dangerous-direct-browser-access': 'true',
+                        'x-api-key': apiKey
                     },
                     body: JSON.stringify({
                         model: 'claude-sonnet-4-20250514',
