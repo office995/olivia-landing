@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Prompt Generator Shortcut</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0f; color: #f0f0f8; font-family: -apple-system, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .card { max-width: 480px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem; text-align: center; }
+        h1 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+        .sub { color: #8888aa; font-size: 0.85rem; margin-bottom: 1.5rem; }
+        label { display: block; text-align: left; color: #8888aa; font-size: 0.78rem; margin-bottom: 0.4rem; letter-spacing: 0.06em; }
+        input { width: 100%; padding: 0.75rem 1rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: #f0f0f8; font-family: monospace; font-size: 0.85rem; margin-bottom: 1.2rem; outline: none; }
+        input:focus { border-color: #8a6f2f; }
+        .btn { display: inline-block; width: 100%; padding: 1rem; border: none; border-radius: 14px; background: linear-gradient(135deg, #c9a84c, #8a6f2f); color: #0a0a0f; font-size: 1rem; font-weight: 700; cursor: pointer; }
+        .btn:active { transform: scale(0.98); }
+        .steps { text-align: left; margin-top: 1.5rem; color: #8888aa; font-size: 0.82rem; line-height: 1.7; }
+        .steps b { color: #c9a84c; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Prompt Generator</h1>
+        <p class="sub">Install as an iPhone Shortcut</p>
+
+        <label>YOUR ANTHROPIC API KEY</label>
+        <input type="text" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+        <button class="btn" onclick="install()">Install Shortcut</button>
+
+        <div class="steps">
+            <b>How it works:</b><br>
+            1. Paste your API key above &amp; tap Install<br>
+            2. Safari will open the Shortcuts app<br>
+            3. Tap "Add Shortcut"<br>
+            4. Say "Hey Siri, Prompt Generator" or tap it from your home screen
+        </div>
+    </div>
+
+    <script>
+        function install() {
+            const key = document.getElementById('apiKey').value.trim();
+            if (!key) { alert('Please paste your API key first'); return; }
+
+            const systemPrompt = "You are the world's most advanced Claude Code Prompt Architect. Your ONLY job is to transform a user's raw, unfiltered idea — however messy, spoken, or incomplete — into a perfectly engineered, zero-failure Claude Code prompt.\\n\\nYou operate at hyper-human reasoning level. You do not take inputs literally — you understand *intent*. You read between the lines. You fill structural gaps. You anticipate what the user actually wants built and what Claude Code will need to know to build it without errors, ambiguity, or hallucination.\\n\\nYou understand that Claude 4.x takes instructions *literally*. It does not infer. It does not guess. It does not expand vague requests. Therefore your output must be explicit, complete, and leave nothing to interpretation.\\n\\nEVERY prompt you generate must follow this exact structure (use these exact XML-style headers in your output):\\n\\n---\\n\\n## ROLE\\n[One sentence. Who Claude Code is for this task. Make it specific to the domain being built.]\\n\\n## CONTEXT\\n[2-4 sentences. What project\\/product\\/system this fits into. What already exists. What the user's goals are. Why this matters. What NOT to do or build beyond scope.]\\n\\n## TASK\\n[The core build instruction. Be specific about what to create. Use concrete nouns — not vague verbs. Include filenames, tech stack, and architecture decisions where relevant. If it's a UI, describe the exact components. If it's an API, describe the endpoints. If it's a script, describe the inputs\\/outputs.]\\n\\n## TECHNICAL REQUIREMENTS\\n[Bullet list. Every tech constraint: language, framework, libraries, file structure, environment. If the user didn't specify, make smart inferences based on what they're building. Include version preferences where relevant.]\\n\\n## ACCEPTANCE CRITERIA\\n[Bullet list. This is the definition of done. Each item must be binary — either it's done or it isn't. No vague items like \\\"works well.\\\" Each criterion must be testable. E.g. \\\"User can click X and Y happens\\\" or \\\"API returns Z when given input W.\\\"]\\n\\n## OUTPUT FORMAT\\n[Describe exactly how Claude Code should deliver its output: which files to create, what the file structure should look like, whether to write to disk, whether to show a summary after finishing. Be explicit.]\\n\\n## CONSTRAINTS & EDGE CASES\\n[Bullet list. What Claude Code must NOT do. Common failure modes to avoid. Security considerations. Things to handle gracefully. Explicit scope limits.]\\n\\n## SUCCESS SIGNAL\\n[One sentence. How the user will know the task is completely done and working correctly.]\\n\\n---\\n\\nRULES YOU MUST FOLLOW:\\n\\n1. NEVER produce a vague prompt. If the user gave you a vague idea, you make it specific. That is your job.\\n2. ALWAYS fill in what the user didn't say if it's needed to make the prompt complete and executable.\\n3. NEVER add unnecessary complexity. Only include what the build actually requires.\\n4. ALWAYS explain WHY constraints exist, not just state them — Claude Code follows motivated instructions better.\\n5. ALWAYS write Acceptance Criteria as binary, testable conditions.\\n6. NEVER use filler phrases like \\\"comprehensive,\\\" \\\"robust,\\\" or \\\"user-friendly\\\" without defining what those mean concretely.\\n7. If the user's idea is for a UI, always specify visual behavior, states, and interactions explicitly.\\n8. If the user's idea involves AI or APIs, always specify the model, the call structure, error handling, and expected response format.\\n9. Output ONLY the generated prompt — no preamble, no explanation, no meta-commentary. Just the finished, ready-to-paste Claude Code prompt.\\n10. The prompt you produce must be good enough that Claude Code can execute it in one pass, without needing to ask clarifying questions.";
+
+            const shortcut = {
+                WFWorkflowMinimumClientVersionString: "900",
+                WFWorkflowMinimumClientVersion: 900,
+                WFWorkflowIcon: {
+                    WFWorkflowIconStartColor: 1013565951,
+                    WFWorkflowIconGlyphNumber: 59771
+                },
+                WFWorkflowClientVersion: "2612.0.4",
+                WFWorkflowOutputContentItemClasses: ["WFStringContentItem"],
+                WFWorkflowHasOutputFallback: false,
+                WFWorkflowActions: [
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.ask",
+                        WFWorkflowActionParameters: {
+                            WFAskActionPrompt: "Describe your idea (or tap mic to dictate):",
+                            WFAskActionDefaultAnswer: ""
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.setvariable",
+                        WFWorkflowActionParameters: {
+                            WFVariableName: "userIdea"
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.gettext",
+                        WFWorkflowActionParameters: {
+                            WFTextActionText: {
+                                Value: {
+                                    string: JSON.stringify({
+                                        model: "claude-sonnet-4-20250514",
+                                        max_tokens: 8000,
+                                        system: systemPrompt,
+                                        messages: [{ role: "user", content: "USERIDEA_PLACEHOLDER" }]
+                                    }),
+                                    attachmentsByRange: {}
+                                },
+                                WFSerializationType: "WFTextTokenString"
+                            }
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.setvariable",
+                        WFWorkflowActionParameters: {
+                            WFVariableName: "bodyTemplate"
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.text.replace",
+                        WFWorkflowActionParameters: {
+                            WFInput: {
+                                Value: { Type: "Variable", VariableName: "bodyTemplate" },
+                                WFSerializationType: "WFTextTokenAttachment"
+                            },
+                            WFReplaceTextFind: "USERIDEA_PLACEHOLDER",
+                            WFReplaceTextReplace: {
+                                Value: { Type: "Variable", VariableName: "userIdea" },
+                                WFSerializationType: "WFTextTokenAttachment"
+                            }
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.setvariable",
+                        WFWorkflowActionParameters: {
+                            WFVariableName: "requestBody"
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.downloadurl",
+                        WFWorkflowActionParameters: {
+                            WFURL: "https://api.anthropic.com/v1/messages",
+                            WFHTTPMethod: "POST",
+                            WFHTTPHeaders: {
+                                Value: {
+                                    WFDictionaryFieldValueItems: [
+                                        {
+                                            WFItemType: 0,
+                                            WFKey: { Value: { string: "x-api-key" }, WFSerializationType: "WFTextTokenString" },
+                                            WFValue: { Value: { string: key }, WFSerializationType: "WFTextTokenString" }
+                                        },
+                                        {
+                                            WFItemType: 0,
+                                            WFKey: { Value: { string: "anthropic-version" }, WFSerializationType: "WFTextTokenString" },
+                                            WFValue: { Value: { string: "2023-06-01" }, WFSerializationType: "WFTextTokenString" }
+                                        },
+                                        {
+                                            WFItemType: 0,
+                                            WFKey: { Value: { string: "content-type" }, WFSerializationType: "WFTextTokenString" },
+                                            WFValue: { Value: { string: "application/json" }, WFSerializationType: "WFTextTokenString" }
+                                        }
+                                    ]
+                                },
+                                WFSerializationType: "WFDictionaryFieldValue"
+                            },
+                            WFHTTPBodyType: "String",
+                            WFHTTPTextBody: {
+                                Value: { Type: "Variable", VariableName: "requestBody" },
+                                WFSerializationType: "WFTextTokenAttachment"
+                            }
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.setvariable",
+                        WFWorkflowActionParameters: {
+                            WFVariableName: "apiResponse"
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.getvalueforkey",
+                        WFWorkflowActionParameters: {
+                            WFInput: {
+                                Value: { Type: "Variable", VariableName: "apiResponse" },
+                                WFSerializationType: "WFTextTokenAttachment"
+                            },
+                            WFDictionaryKey: "content"
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.setvariable",
+                        WFWorkflowActionParameters: {
+                            WFVariableName: "contentArray"
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.getitemfromlist",
+                        WFWorkflowActionParameters: {
+                            WFInput: {
+                                Value: { Type: "Variable", VariableName: "contentArray" },
+                                WFSerializationType: "WFTextTokenAttachment"
+                            },
+                            WFItemSpecifier: "First Item"
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.getvalueforkey",
+                        WFWorkflowActionParameters: {
+                            WFDictionaryKey: "text"
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.setvariable",
+                        WFWorkflowActionParameters: {
+                            WFVariableName: "generatedPrompt"
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.showresult",
+                        WFWorkflowActionParameters: {
+                            Text: {
+                                Value: { Type: "Variable", VariableName: "generatedPrompt" },
+                                WFSerializationType: "WFTextTokenAttachment"
+                            }
+                        }
+                    },
+                    {
+                        WFWorkflowActionIdentifier: "is.workflow.actions.copytoClipboard",
+                        WFWorkflowActionParameters: {
+                            WFInput: {
+                                Value: { Type: "Variable", VariableName: "generatedPrompt" },
+                                WFSerializationType: "WFTextTokenAttachment"
+                            }
+                        }
+                    }
+                ],
+                WFWorkflowImportQuestions: [],
+                WFWorkflowTypes: [],
+                WFQuickActionSurfaces: [],
+                WFWorkflowHasShortcutInputVariables: false,
+                WFWorkflowName: "Prompt Generator"
+            };
+
+            // Convert to plist-like signed shortcut URL
+            // Apple Shortcuts can be imported via iCloud sharing or file
+            // We'll generate a downloadable .shortcut file
+            const jsonStr = JSON.stringify(shortcut);
+            const blob = new Blob([jsonStr], { type: 'application/x-apple-shortcut' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Prompt Generator.shortcut';
+            a.click();
+            URL.revokeObjectURL(url);
+
+            alert('File downloaded! Open it from your Files app to install the shortcut.');
+        }
+    </script>
+</body>
+</html>
